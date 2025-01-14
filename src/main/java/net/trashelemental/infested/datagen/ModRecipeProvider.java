@@ -2,7 +2,6 @@ package net.trashelemental.infested.datagen;
 
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -56,6 +55,37 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ModItems.SPIDER_EGG.get()), has(ModItems.SPIDER_EGG.get()))
                 .save(pWriter);
 
+        //Functional Items
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SWARM_CELL.get())
+                .pattern("aba")
+                .pattern("bcb")
+                .pattern("aba")
+                .define('a', Items.HONEYCOMB)
+                .define('b', ModItems.BEE_EGGS.get())
+                .define('c', Items.BEE_NEST)
+                .unlockedBy(getHasName(ModItems.BEE_EGGS.get()), has(ModItems.BEE_EGGS.get()))
+                .save(pWriter);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SWARM_SAC.get())
+                .pattern("aba")
+                .pattern("bcb")
+                .pattern("aba")
+                .define('a', Items.COBWEB)
+                .define('b', ModItems.SPIDER_EGG.get())
+                .define('c', ModItems.SWARM_CELL.get())
+                .unlockedBy(getHasName(ModItems.SWARM_CELL.get()), has(ModItems.SWARM_CELL.get()))
+                .save(pWriter);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SWARM_STONE.get())
+                .pattern("aba")
+                .pattern("bcb")
+                .pattern("aba")
+                .define('a', Items.INFESTED_STONE)
+                .define('b', ModItems.SILVERFISH_EGGS.get())
+                .define('c', ModItems.SWARM_CELL.get())
+                .unlockedBy(getHasName(ModItems.SWARM_CELL.get()), has(ModItems.SWARM_CELL.get()))
+                .save(pWriter);
+
 
         //Food Items
         ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, ModItems.BUG_STEW.get())
@@ -79,6 +109,17 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('d', Items.BOWL)
                 .unlockedBy(getHasName(ModItems.FRIED_GRUB.get()), has(ModItems.FRIED_GRUB.get()))
                 .save(pWriter, new ResourceLocation("infested", "bug_stew_from_spider_egg"));
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, ModItems.BUG_STEW.get())
+                .pattern("abc")
+                .pattern(" d ")
+                .pattern("   ")
+                .define('a', Items.CRIMSON_FUNGUS)
+                .define('b', ModItems.FRIED_GRUB.get())
+                .define('c', ModItems.BEE_EGGS.get())
+                .define('d', Items.BOWL)
+                .unlockedBy(getHasName(ModItems.FRIED_GRUB.get()), has(ModItems.FRIED_GRUB.get()))
+                .save(pWriter);
 
         SimpleCookingRecipeBuilder.smelting(
                         Ingredient.of(ModItems.RAW_GRUB.get()),
@@ -373,6 +414,14 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ModItems.SILVERFISH_EGGS.get()), has(ModItems.SILVERFISH_EGGS.get()))
                 .save(pWriter);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.BEE_NEST)
+                .pattern("aaa")
+                .pattern("bbb")
+                .pattern("aaa")
+                .define('a', Items.HONEYCOMB)
+                .define('b', ModItems.BEE_EGGS.get())
+                .unlockedBy(getHasName(ModItems.BEE_EGGS.get()), has(ModItems.BEE_EGGS.get()))
+                .save(pWriter);
 
     }
 

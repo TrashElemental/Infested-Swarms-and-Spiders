@@ -6,13 +6,11 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import net.trashelemental.infested.item.armor.custom.ChitinArmorItem;
-import net.trashelemental.infested.item.armor.custom.SpiderArmorItem;
+import net.trashelemental.infested.armor.custom.ChitinArmorItem;
+import net.trashelemental.infested.armor.custom.SpiderArmorItem;
 import net.trashelemental.infested.entity.ModEntities;
 import net.trashelemental.infested.infested;
-import net.trashelemental.infested.item.custom.BugStewItem;
-import net.trashelemental.infested.item.custom.SilverfishEggsItem;
-import net.trashelemental.infested.item.custom.SpiderEggItem;
+import net.trashelemental.infested.item.custom.*;
 
 public class ModItems {
     public static final DeferredRegister<Item> ITEMS =
@@ -46,6 +44,21 @@ public class ModItems {
 
     public static final RegistryObject<Item> SPIDER_EGG = ITEMS.register("spider_egg",
             () -> new SpiderEggItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> BEE_EGGS = ITEMS.register("bee_eggs",
+            () -> new BeeEggsItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> SWARM_CELL = ITEMS.register("swarm_cell_bee",
+            () -> new SwarmCellItem(new Item.Properties(),
+                    3, ModEntities.BEE_MINION::get, 30, ModItems.BEE_EGGS.get()));
+
+    public static final RegistryObject<Item> SWARM_SAC = ITEMS.register("swarm_cell_spider",
+            () -> new SwarmCellItem(new Item.Properties(),
+                    2, ModEntities.SPIDER_MINION::get, 20, ModItems.SPIDER_EGG.get()));
+
+    public static final RegistryObject<Item> SWARM_STONE = ITEMS.register("swarm_cell_silverfish",
+            () -> new SwarmCellItem(new Item.Properties(),
+                    5, ModEntities.TAMED_SILVERFISH::get, 45, ModItems.SILVERFISH_EGGS.get()));
 
     //Armor Items
     public static final RegistryObject<Item> CHITIN_HELMET = ITEMS.register("chitin_helmet",

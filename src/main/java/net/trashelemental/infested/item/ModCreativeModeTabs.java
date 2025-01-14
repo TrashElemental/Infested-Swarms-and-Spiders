@@ -25,6 +25,11 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.BUG_STEW.get());
                         output.accept(ModItems.SILVERFISH_EGGS.get());
                         output.accept(ModItems.SPIDER_EGG.get());
+                        output.accept(ModItems.BEE_EGGS.get());
+
+                        output.accept(ModItems.SWARM_CELL.get());
+                        output.accept(ModItems.SWARM_SAC.get());
+                        output.accept(ModItems.SWARM_STONE.get());
 
                         output.accept(ModItems.INSECT_TEMPLATE.get());
                         output.accept(ModItems.CHITIN_HELMET.get());

@@ -1,5 +1,6 @@
-// 1.20.1	2024-08-20T23:03:52.6408209	Item Models: infested
+// 1.20.1	2024-10-25T20:02:04.7770141	Item Models: infested
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/infested/models/item/ancient_debreetle_spawn_egg.json
+71d4072823b388736bda8122ceeed451d8db3313 assets/infested/models/item/bee_eggs.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/infested/models/item/brilliant_beetle_spawn_egg.json
 548e14875462cd67b9b39fbe8880aed5a83264b6 assets/infested/models/item/bug_stew.json
 c59490e98e36cf1e96cddc5f79c3aa9a4996f607 assets/infested/models/item/chitin.json
@@ -31,3 +32,6 @@ ebf22314026be1345131e52d0ca7a671cf3e0aae assets/infested/models/item/silverfish_
 93d8c67720c89c553c19aecf649107b8c709d0c0 assets/infested/models/item/spider_helmet.json
 0a1bc75658a546861f5987747d871af252df50c9 assets/infested/models/item/spider_leggings.json
 9b57a7f97821b8ea488e7039d5b838ab2b6cf3f8 assets/infested/models/item/spider_template.json
+b823eac580b8f625c1cef2589bc6ca6ba0fe960a assets/infested/models/item/swarm_cell_bee.json
+f3ded66165b99b1109a101a9a2fa341f2a6ef8d1 assets/infested/models/item/swarm_cell_silverfish.json
+0010c4fc79404f20ab7efe141a4b93bf2ff1f588 assets/infested/models/item/swarm_cell_spider.json

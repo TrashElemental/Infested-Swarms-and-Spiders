@@ -1,8 +1,6 @@
 package net.trashelemental.infested.entity.custom;
 
-import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -23,7 +21,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WallClimberNavigation;
 import net.minecraft.world.entity.animal.Animal;
@@ -37,14 +34,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.trashelemental.infested.entity.ModEntities;
-import net.trashelemental.infested.entity.animations.ModAnimationDefinitions;
-import net.trashelemental.infested.entity.custom.spiders.TamedSpiderEntity;
 import net.trashelemental.infested.item.ModItems;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
 
 public class BrilliantBeetleEntity extends TamableAnimal {
 

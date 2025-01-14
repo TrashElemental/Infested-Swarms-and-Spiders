@@ -51,6 +51,38 @@ public class ModAdvancementGenerator implements ForgeAdvancementProvider.Advance
                 .save(writer, new ResourceLocation(infested.MOD_ID, "silverfish_eggs_get"), existingFileHelper);
 
 
+        Advancement BeeEggsGet = Advancement.Builder.advancement()
+                .display(
+                        ModItems.BEE_EGGS.get(), // Icon
+                        Component.translatable("advancements.bee_eggs_get.title"), // Title
+                        Component.translatable("advancements.bee_eggs_get.description"), // Description
+                        new ResourceLocation("textures/gui/advancements/backgrounds/stone.png"), // Background
+                        FrameType.GOAL, // Frame Type
+                        true, // Show Toast
+                        true, // Announce to Chat
+                        false // Hidden
+                )
+                .parent(new ResourceLocation("minecraft:husbandry/safely_harvest_honey"))
+                .addCriterion("has_bee_eggs", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.BEE_EGGS.get()))
+                .save(writer, new ResourceLocation(infested.MOD_ID, "bee_eggs_get"), existingFileHelper);
+
+
+        Advancement SwarmCellGet = Advancement.Builder.advancement()
+                .display(
+                        ModItems.SWARM_CELL.get(), // Icon
+                        Component.translatable("advancements.swarm_cell_get.title"), // Title
+                        Component.translatable("advancements.swarm_cell_get.description"), // Description
+                        new ResourceLocation("textures/gui/advancements/backgrounds/stone.png"), // Background
+                        FrameType.GOAL, // Frame Type
+                        true, // Show Toast
+                        true, // Announce to Chat
+                        false // Hidden
+                )
+                .parent(new ResourceLocation("minecraft:husbandry/safely_harvest_honey"))
+                .addCriterion("has_swarm_cell", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.SWARM_CELL.get()))
+                .save(writer, new ResourceLocation(infested.MOD_ID, "swarm_cell_get"), existingFileHelper);
+
+
         Advancement InsectTemplateGet = Advancement.Builder.advancement()
                 .display(
                         ModItems.INSECT_TEMPLATE.get(), // Icon

@@ -14,10 +14,10 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.trashelemental.infested.magic.enchantments.ModEnchantments;
 import net.trashelemental.infested.entity.ModEntities;
 import net.trashelemental.infested.infested;
 import net.trashelemental.infested.item.ModItems;
+import net.trashelemental.infested.magic.enchantments.ModEnchantments;
 
 import javax.annotation.Nullable;
 

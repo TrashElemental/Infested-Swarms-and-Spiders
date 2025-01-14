@@ -4,14 +4,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.trashelemental.infested.block.ModBlocks;
-import net.trashelemental.infested.entity.custom.spiders.AttackSpiderEntity;
-import net.trashelemental.infested.entity.custom.spiders.SpiderMinionEntity;
-import net.trashelemental.infested.infested;
+import net.trashelemental.infested.entity.custom.minions.AttackSpiderEntity;
+import net.trashelemental.infested.entity.custom.minions.SpiderMinionEntity;
 
 @SuppressWarnings("deprecation")
 @Mod.EventBusSubscriber
@@ -32,7 +30,7 @@ public class CobwebPlaceOnDeathEvent {
 
         BlockState cobwebTrapState = ModBlocks.COBWEB_TRAP.get().defaultBlockState();
 
-        if (cobwebTrapState.canSurvive(level, pos)) {
+        if (!level.isClientSide && cobwebTrapState.canSurvive(level, pos)) {
             level.setBlock(pos, cobwebTrapState, 3);
         }
     }

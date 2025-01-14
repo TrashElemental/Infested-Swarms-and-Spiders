@@ -12,8 +12,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.trashelemental.infested.entity.ModEntities;
-import net.trashelemental.infested.entity.custom.silverfish.AttackSilverfishEntity;
-import net.trashelemental.infested.entity.custom.spiders.AttackSpiderEntity;
+import net.trashelemental.infested.entity.custom.minions.AttackBeeEntity;
+import net.trashelemental.infested.entity.custom.minions.AttackSilverfishEntity;
+import net.trashelemental.infested.entity.custom.minions.AttackSpiderEntity;
 import net.trashelemental.infested.item.ModItems;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -46,6 +47,33 @@ public class ModDispenserExtensions {
                 return itemstack;
             }
         }));
+
+
+        event.enqueueWork(() -> DispenserBlock.registerBehavior(ModItems.BEE_EGGS.get(), new OptionalDispenseItemBehavior() {
+            @Override
+            public ItemStack execute(BlockSource blockSource, ItemStack stack) {
+
+                Level world = blockSource.getLevel();
+                Direction direction = blockSource.getBlockState().getValue(DispenserBlock.FACING);
+                BlockPos dispenserPos = blockSource.getPos();
+
+                BlockPos spawnPos = dispenserPos.relative(direction);
+
+                if (world instanceof ServerLevel serverWorld) {
+                    AttackBeeEntity bee = ModEntities.ATTACK_BEE.get().create(serverWorld);
+                    if (bee != null) {
+                        bee.moveTo(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, direction.toYRot(), 0.0F);
+                        serverWorld.addFreshEntity(bee);
+                    }
+                }
+
+                ItemStack itemstack = stack.copy();
+                itemstack.shrink(1);
+
+                return itemstack;
+            }
+        }));
+
 
         event.enqueueWork(() -> DispenserBlock.registerBehavior(ModItems.SPIDER_EGG.get(), new OptionalDispenseItemBehavior() {
             @Override

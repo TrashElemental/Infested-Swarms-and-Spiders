@@ -11,8 +11,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
-import net.trashelemental.infested.magic.brewing.ModPotions;
 import net.trashelemental.infested.item.ModItems;
+import net.trashelemental.infested.magic.brewing.ModPotions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +49,7 @@ public class JEIBrewingRecipes implements IModPlugin {
         inputStack.clear();
         ingredientStack.clear();
 
+
         ingredientStack.add(new ItemStack(ModItems.CHITIN.get()));
         inputStack.add(new ItemStack(Items.EGG));
         brewingRecipes.add(factory.createBrewingRecipe(
@@ -60,7 +61,15 @@ public class JEIBrewingRecipes implements IModPlugin {
         ingredientStack.clear();
 
 
-
+        ingredientStack.add(new ItemStack(Items.HONEYCOMB));
+        inputStack.add(new ItemStack(ModItems.SILVERFISH_EGGS.get()));
+        brewingRecipes.add(factory.createBrewingRecipe(
+                List.copyOf(ingredientStack),
+                List.copyOf(inputStack),
+                new ItemStack(ModItems.BEE_EGGS.get())
+        ));
+        inputStack.clear();
+        ingredientStack.clear();
 
         //Potion Items
         ingredientStack.add(new ItemStack(ModItems.CHITIN.get()));

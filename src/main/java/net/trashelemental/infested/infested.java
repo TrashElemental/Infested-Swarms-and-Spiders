@@ -14,22 +14,18 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.trashelemental.infested.block.ModBlocks;
-import net.trashelemental.infested.magic.brewing.ModPotions;
-import net.trashelemental.infested.magic.effects.ModMobEffects;
-import net.trashelemental.infested.magic.enchantments.ModEnchantments;
 import net.trashelemental.infested.entity.ModEntities;
 import net.trashelemental.infested.entity.client.renderers.*;
 import net.trashelemental.infested.entity.client.renderers.jewelbeetles.AncientDebreetleRenderer;
 import net.trashelemental.infested.entity.client.renderers.jewelbeetles.ChorusBeetleRenderer;
 import net.trashelemental.infested.entity.client.renderers.jewelbeetles.HarvestBeetleRenderer;
 import net.trashelemental.infested.entity.client.renderers.jewelbeetles.JewelBeetleRenderer;
-import net.trashelemental.infested.entity.client.renderers.silverfish.AttackSilverfishRenderer;
-import net.trashelemental.infested.entity.client.renderers.silverfish.TamedSilverfishRenderer;
-import net.trashelemental.infested.entity.client.renderers.spiders.AttackSpiderRenderer;
-import net.trashelemental.infested.entity.client.renderers.spiders.SpiderMinionRenderer;
-import net.trashelemental.infested.entity.client.renderers.spiders.TamedSpiderRenderer;
+import net.trashelemental.infested.entity.client.renderers.minions.*;
 import net.trashelemental.infested.item.ModCreativeModeTabs;
 import net.trashelemental.infested.item.ModItems;
+import net.trashelemental.infested.magic.brewing.ModPotions;
+import net.trashelemental.infested.magic.effects.ModMobEffects;
+import net.trashelemental.infested.magic.enchantments.ModEnchantments;
 import net.trashelemental.infested.util.loot.ModLootModifiers;
 import org.slf4j.Logger;
 
@@ -106,6 +102,8 @@ public class infested
             EntityRenderers.register(ModEntities.TAMED_SPIDER.get(), TamedSpiderRenderer::new);
             EntityRenderers.register(ModEntities.SPIDER_MINION.get(), SpiderMinionRenderer::new);
             EntityRenderers.register(ModEntities.ATTACK_SPIDER.get(), AttackSpiderRenderer::new);
+            EntityRenderers.register(ModEntities.BEE_MINION.get(), BeeMinionRenderer::new);
+            EntityRenderers.register(ModEntities.ATTACK_BEE.get(), AttackBeeRenderer::new);
 
 
         }

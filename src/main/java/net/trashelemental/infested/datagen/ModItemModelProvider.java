@@ -6,16 +6,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.trashelemental.infested.block.ModBlocks;
 import net.trashelemental.infested.infested;
 import net.trashelemental.infested.item.ModItems;
-
-import java.util.Objects;
 
 
 public class ModItemModelProvider extends ItemModelProvider {
@@ -35,6 +31,11 @@ public class ModItemModelProvider extends ItemModelProvider {
 
         simpleItem(ModItems.SILVERFISH_EGGS);
         simpleItem(ModItems.SPIDER_EGG);
+        simpleItem(ModItems.BEE_EGGS);
+
+        simpleItem(ModItems.SWARM_CELL);
+        simpleItem(ModItems.SWARM_SAC);
+        simpleItem(ModItems.SWARM_STONE);
 
         simpleItem(ModItems.CHITIN_HELMET);
         simpleItem(ModItems.CHITIN_CHESTPLATE);

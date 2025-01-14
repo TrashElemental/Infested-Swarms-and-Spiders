@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.trashelemental.infested.entity.ModEntities;
-import net.trashelemental.infested.entity.custom.spiders.TamedSpiderEntity;
+import net.trashelemental.infested.entity.custom.TamedSpiderEntity;
 
 import java.util.Random;
 

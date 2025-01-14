@@ -1,6 +1,5 @@
 package net.trashelemental.infested.util;
 
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.trashelemental.infested.entity.ModEntities;

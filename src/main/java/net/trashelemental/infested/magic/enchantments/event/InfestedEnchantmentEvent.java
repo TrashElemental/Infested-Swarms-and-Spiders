@@ -14,11 +14,11 @@ import net.minecraftforge.event.entity.living.ShieldBlockEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.trashelemental.infested.magic.enchantments.ModEnchantments;
 import net.trashelemental.infested.entity.ModEntities;
-import net.trashelemental.infested.entity.custom.silverfish.TamedSilverfishEntity;
-import net.trashelemental.infested.entity.custom.spiders.SpiderMinionEntity;
+import net.trashelemental.infested.entity.custom.minions.SpiderMinionEntity;
+import net.trashelemental.infested.entity.custom.minions.TamedSilverfishEntity;
 import net.trashelemental.infested.item.ModItems;
+import net.trashelemental.infested.magic.enchantments.ModEnchantments;
 
 import javax.annotation.Nullable;
 

@@ -14,10 +14,10 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.trashelemental.infested.magic.effects.ModMobEffects;
 import net.trashelemental.infested.entity.custom.MantisEntity;
 import net.trashelemental.infested.entity.custom.OrchidMantisEntity;
 import net.trashelemental.infested.infested;
+import net.trashelemental.infested.magic.effects.ModMobEffects;
 
 import javax.annotation.Nullable;
 

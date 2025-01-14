@@ -15,11 +15,7 @@ import net.trashelemental.infested.entity.custom.jewelbeetles.AncientDebreetleEn
 import net.trashelemental.infested.entity.custom.jewelbeetles.ChorusBeetleEntity;
 import net.trashelemental.infested.entity.custom.jewelbeetles.HarvestBeetleEntity;
 import net.trashelemental.infested.entity.custom.jewelbeetles.JewelBeetleEntity;
-import net.trashelemental.infested.entity.custom.silverfish.AttackSilverfishEntity;
-import net.trashelemental.infested.entity.custom.silverfish.TamedSilverfishEntity;
-import net.trashelemental.infested.entity.custom.spiders.AttackSpiderEntity;
-import net.trashelemental.infested.entity.custom.spiders.SpiderMinionEntity;
-import net.trashelemental.infested.entity.custom.spiders.TamedSpiderEntity;
+import net.trashelemental.infested.entity.custom.minions.*;
 import net.trashelemental.infested.infested;
 
 @Mod.EventBusSubscriber(modid = infested.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -43,6 +39,8 @@ public class ModEventBusEvents {
         event.put(ModEntities.TAMED_SPIDER.get(), TamedSpiderEntity.createAttributes().build());
         event.put(ModEntities.SPIDER_MINION.get(), SpiderMinionEntity.createAttributes().build());
         event.put(ModEntities.ATTACK_SPIDER.get(), AttackSpiderEntity.createAttributes().build());
+        event.put(ModEntities.BEE_MINION.get(), BeeMinionEntity.createAttributes().build());
+        event.put(ModEntities.ATTACK_BEE.get(), AttackBeeEntity.createAttributes().build());
     }
 
     @SubscribeEvent

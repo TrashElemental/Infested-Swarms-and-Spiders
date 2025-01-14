@@ -11,11 +11,7 @@ import net.trashelemental.infested.entity.custom.jewelbeetles.AncientDebreetleEn
 import net.trashelemental.infested.entity.custom.jewelbeetles.ChorusBeetleEntity;
 import net.trashelemental.infested.entity.custom.jewelbeetles.HarvestBeetleEntity;
 import net.trashelemental.infested.entity.custom.jewelbeetles.JewelBeetleEntity;
-import net.trashelemental.infested.entity.custom.silverfish.AttackSilverfishEntity;
-import net.trashelemental.infested.entity.custom.silverfish.TamedSilverfishEntity;
-import net.trashelemental.infested.entity.custom.spiders.AttackSpiderEntity;
-import net.trashelemental.infested.entity.custom.spiders.SpiderMinionEntity;
-import net.trashelemental.infested.entity.custom.spiders.TamedSpiderEntity;
+import net.trashelemental.infested.entity.custom.minions.*;
 import net.trashelemental.infested.infested;
 
 public class ModEntities {
@@ -69,6 +65,12 @@ public class ModEntities {
     public static final RegistryObject<EntityType<AttackSpiderEntity>> ATTACK_SPIDER =
           ENTITY_TYPES.register("attack_spider", () -> EntityType.Builder.of(AttackSpiderEntity::new, MobCategory.CREATURE)
                 .sized(0.7f, 0.3f).build("attack_spider"));
+    public static final RegistryObject<EntityType<BeeMinionEntity>> BEE_MINION =
+            ENTITY_TYPES.register("bee_minion", () -> EntityType.Builder.of(BeeMinionEntity::new, MobCategory.CREATURE)
+                    .sized(0.7f, 0.3f).build("bee_minion"));
+    public static final RegistryObject<EntityType<AttackBeeEntity>> ATTACK_BEE =
+            ENTITY_TYPES.register("attack_bee", () -> EntityType.Builder.of(AttackBeeEntity::new, MobCategory.CREATURE)
+                    .sized(0.7f, 0.3f).build("attack_bee"));
 
 
     public static void register(IEventBus eventBus) {

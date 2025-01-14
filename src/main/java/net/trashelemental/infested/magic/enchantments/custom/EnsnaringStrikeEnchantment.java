@@ -5,6 +5,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class EnsnaringStrikeEnchantment extends Enchantment {
+
     public EnsnaringStrikeEnchantment(EquipmentSlot... slots) {
         super(Rarity.RARE, EnchantmentCategory.WEAPON, slots);
     }

@@ -14,14 +14,17 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.animal.Bee;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.CaveSpider;
 import net.minecraft.world.entity.monster.Silverfish;
 import net.minecraft.world.entity.monster.Spider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.BeehiveBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,22 +35,50 @@ import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.trashelemental.infested.magic.effects.ModMobEffects;
 import net.trashelemental.infested.entity.ModEntities;
 import net.trashelemental.infested.entity.custom.GrubEntity;
-import net.trashelemental.infested.entity.custom.silverfish.TamedSilverfishEntity;
-import net.trashelemental.infested.entity.custom.spiders.SpiderMinionEntity;
+import net.trashelemental.infested.entity.custom.minions.AttackBeeEntity;
+import net.trashelemental.infested.entity.custom.minions.BeeMinionEntity;
+import net.trashelemental.infested.entity.custom.minions.SpiderMinionEntity;
+import net.trashelemental.infested.entity.custom.minions.TamedSilverfishEntity;
 import net.trashelemental.infested.infested;
 import net.trashelemental.infested.item.ModItems;
+import net.trashelemental.infested.magic.effects.ModMobEffects;
 import net.trashelemental.infested.util.BlockEntityMapping;
 import net.trashelemental.infested.util.EntitySpawnInfo;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 @Mod.EventBusSubscriber(modid = infested.MOD_ID)
 public class ModEvents {
 
 
+    //Right-click block events
+    @SubscribeEvent
+    public static void onPlayerInteract(PlayerInteractEvent.RightClickBlock event) {
+        BlockState blockState = event.getLevel().getBlockState(event.getPos());
+        ItemStack tool = event.getItemStack();
+
+        if (blockState.is(Blocks.BEEHIVE) || blockState.is(Blocks.BEE_NEST)) {
+            int honeyLevel = blockState.getValue(BeehiveBlock.HONEY_LEVEL);
+
+            if (tool.is(Items.SHEARS) && honeyLevel >= 5) {
+
+                Random random = new Random();
+                if (random.nextFloat() < 0.40f) {
+                    ItemStack customItem = new ItemStack(ModItems.BEE_EGGS.get());
+                    BlockPos blockPos = event.getPos();
+                    Level level = event.getLevel();
+
+                    if (!level.isClientSide) {
+                        ItemEntity itemEntity = new ItemEntity(level, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5, customItem);
+                        level.addFreshEntity(itemEntity);
+                    }
+                }
+            }
+        }
+    }
 
 
     //On Attack events
@@ -188,6 +219,15 @@ public class ModEvents {
                     serverLevel.addFreshEntity(entityToSpawn);
                 }
             }
+
+            //Bee Eggs have a 50% chance to drop from bee nests and beehives.
+            if (state.is(Blocks.BEEHIVE) || state.is(Blocks.BEE_NEST)) {
+                if (Math.random() < 0.5) {
+                    ItemEntity entityToSpawn = new ItemEntity(serverLevel, x, y, z, new ItemStack(ModItems.BEE_EGGS.get()));
+                    entityToSpawn.setPickUpDelay(10);
+                    serverLevel.addFreshEntity(entityToSpawn);
+                }
+            }
         }
     }
 
@@ -216,6 +256,12 @@ public class ModEvents {
         if (entity instanceof SpiderMinionEntity spider) {
             if (spider.isTame()) {
                 spider.setOwnerUUID(null);
+            }
+        }
+
+        if (entity instanceof BeeMinionEntity bee) {
+            if (bee.isTame()) {
+                bee.setOwnerUUID(null);
             }
         }
 
@@ -249,6 +295,18 @@ public class ModEvents {
                 if (world instanceof ServerLevel _level) {
                     ItemEntity entityToSpawn = new ItemEntity(_level, (entity.getX()), (entity.getY()), (entity.getZ()),
                             new ItemStack(ModItems.SILVERFISH_EGGS.get()));
+                    entityToSpawn.setPickUpDelay(10);
+                    _level.addFreshEntity(entityToSpawn);
+                }
+            }
+        }
+
+        //Bees have a 10% chance to drop Bee Eggs
+        if (entity instanceof Bee && !(entity instanceof AttackBeeEntity)) {
+            if (Math.random() >= 0.9) {
+                if (world instanceof ServerLevel _level) {
+                    ItemEntity entityToSpawn = new ItemEntity(_level, (entity.getX()), (entity.getY()), (entity.getZ()),
+                            new ItemStack(ModItems.BEE_EGGS.get()));
                     entityToSpawn.setPickUpDelay(10);
                     _level.addFreshEntity(entityToSpawn);
                 }

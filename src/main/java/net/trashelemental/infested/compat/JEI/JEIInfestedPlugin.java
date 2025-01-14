@@ -30,6 +30,14 @@ public class JEIInfestedPlugin implements IModPlugin {
                 new ItemStack(ModItems.SILVERFISH_EGGS.get())), VanillaTypes.ITEM_STACK, Component.translatable("jei.infested.silverfish_eggs_info"));
         registration.addIngredientInfo(List.of(
                 new ItemStack(ModItems.RAW_GRUB.get())), VanillaTypes.ITEM_STACK, Component.translatable("jei.infested.raw_grub_info"));
+        registration.addIngredientInfo(List.of(
+                new ItemStack(ModItems.BEE_EGGS.get())), VanillaTypes.ITEM_STACK, Component.translatable("jei.infested.bee_eggs_info"));
+
+        registration.addIngredientInfo(List.of(
+                new ItemStack(ModItems.SWARM_CELL.get()),
+                new ItemStack(ModItems.SWARM_SAC.get()),
+                new ItemStack(ModItems.SWARM_STONE.get())),
+                VanillaTypes.ITEM_STACK, Component.translatable("jei.infested.swarm_cell_info"));
 
 
         //Functional Blocks
