@@ -31,7 +31,7 @@ public class SpiderTrapBlock extends Block {
                 int count = Mth.nextInt(random, 3, 5);
 
                 for (int i = 0; i < count; i++) {
-                    Entity entity = ModEntities.ATTACK_SPIDER.get().create(serverLevel);
+                    Entity entity = ModEntities.SPIDER_MINION.get().create(serverLevel);
                     if (entity != null) {
                         entity.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0, 0);
                         serverLevel.addFreshEntity(entity);

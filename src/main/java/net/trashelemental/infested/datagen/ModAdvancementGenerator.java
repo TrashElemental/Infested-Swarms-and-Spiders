@@ -115,6 +115,68 @@ public class ModAdvancementGenerator implements ForgeAdvancementProvider.Advance
                 .save(writer, new ResourceLocation(infested.MOD_ID, "spider_template_get"), existingFileHelper);
 
 
+        Advancement BeeTemplateGet = Advancement.Builder.advancement()
+                .display(
+                        ModItems.BEE_TEMPLATE.get(), // Icon
+                        Component.translatable("advancements.bee_template_get.title"), // Title
+                        Component.translatable("advancements.bee_template_get.description"), // Description
+                        new ResourceLocation("textures/gui/advancements/backgrounds/stone.png"), // Background
+                        FrameType.GOAL, // Frame Type
+                        true, // Show Toast
+                        true, // Announce to Chat
+                        false // Hidden
+                )
+                .parent(new ResourceLocation("minecraft:adventure/trim_with_any_armor_pattern"))
+                .addCriterion("has_bee_template", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.BEE_TEMPLATE.get()))
+                .save(writer, new ResourceLocation(infested.MOD_ID, "bee_template_get"), existingFileHelper);
+
+
+        Advancement MantisSickleGet = Advancement.Builder.advancement()
+                .display(
+                        ModItems.MANTIS_SICKLE.get(), // Icon
+                        Component.translatable("advancements.mantis_sickle_get.title"), // Title
+                        Component.translatable("advancements.mantis_sickle_get.description"), // Description
+                        new ResourceLocation("textures/gui/advancements/backgrounds/stone.png"), // Background
+                        FrameType.GOAL, // Frame Type
+                        true, // Show Toast
+                        true, // Announce to Chat
+                        false // Hidden
+                )
+                .parent(InsectTemplateGet)
+                .addCriterion("has_mantis_sickle", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.MANTIS_SICKLE.get()))
+                .save(writer, new ResourceLocation(infested.MOD_ID, "mantis_sickle_get"), existingFileHelper);
+
+        Advancement SpiderSicaGet = Advancement.Builder.advancement()
+                .display(
+                        ModItems.SPIDER_SICA.get(), // Icon
+                        Component.translatable("advancements.spider_sica_get.title"), // Title
+                        Component.translatable("advancements.spider_sica_get.description"), // Description
+                        new ResourceLocation("textures/gui/advancements/backgrounds/stone.png"), // Background
+                        FrameType.GOAL, // Frame Type
+                        true, // Show Toast
+                        true, // Announce to Chat
+                        false // Hidden
+                )
+                .parent(SpiderTemplateGet)
+                .addCriterion("has_spider_sica", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.SPIDER_SICA.get()))
+                .save(writer, new ResourceLocation(infested.MOD_ID, "spider_sica_get"), existingFileHelper);
+
+        Advancement StingerPoniardGet = Advancement.Builder.advancement()
+                .display(
+                        ModItems.STINGER_PONIARD.get(), // Icon
+                        Component.translatable("advancements.stinger_poniard_get.title"), // Title
+                        Component.translatable("advancements.stinger_poniard_get.description"), // Description
+                        new ResourceLocation("textures/gui/advancements/backgrounds/stone.png"), // Background
+                        FrameType.GOAL, // Frame Type
+                        true, // Show Toast
+                        true, // Announce to Chat
+                        false // Hidden
+                )
+                .parent(BeeTemplateGet)
+                .addCriterion("has_stinger_poniard", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.STINGER_PONIARD.get()))
+                .save(writer, new ResourceLocation(infested.MOD_ID, "stinger_poniard_get"), existingFileHelper);
+
+
         Advancement FriedGrubEat = Advancement.Builder.advancement()
                 .display(
                         ModItems.FRIED_GRUB.get(), // Icon

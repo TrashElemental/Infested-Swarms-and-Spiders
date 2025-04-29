@@ -1,0 +1,44 @@
+{
+  "values": [
+    {
+      "id": "the_bumblezone:bumble_bee_chestplate_1",
+      "required": false
+    },
+    {
+      "id": "the_bumblezone:bumble_bee_chestplate_2",
+      "required": false
+    },
+    {
+      "id": "the_bumblezone:bumble_bee_chestplate_trans_1",
+      "required": false
+    },
+    {
+      "id": "the_bumblezone:bumble_bee_chestplate_trans_2",
+      "required": false
+    },
+    {
+      "id": "infested:bee_chestplate",
+      "required": false
+    },
+    {
+      "id": "infested:stinger_poniard",
+      "required": false
+    },
+    {
+      "id": "mcda:beenest_armor_chestplate",
+      "required": false
+    },
+    {
+      "id": "mcda:beehive_armor_chestplate",
+      "required": false
+    },
+    {
+      "id": "the_bumblezone:stinger_spear",
+      "required": false
+    },
+    {
+      "id": "queen_bee:stinger_sword",
+      "required": false
+    }
+  ]
+}

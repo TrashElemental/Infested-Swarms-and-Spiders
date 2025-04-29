@@ -12,7 +12,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-//Copying vanilla spider model here so the mod won't break with texture packs.
+//Copying vanilla spider model here so the mod won't break with texture / model packs.
 
 @OnlyIn(Dist.CLIENT)
 public class ModSpiderModel<T extends Entity> extends HierarchicalModel<T> {
@@ -46,7 +46,7 @@ public class ModSpiderModel<T extends Entity> extends HierarchicalModel<T> {
         this.leftFrontLeg = pRoot.getChild("left_front_leg");
     }
 
-    public static LayerDefinition createSpiderBodyLayer() {
+    public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
         int i = 15;

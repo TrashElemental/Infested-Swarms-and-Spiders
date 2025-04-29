@@ -1,0 +1,20 @@
+{
+  "values": [
+    {
+      "id": "infested:spider_chestplate",
+      "required": false
+    },
+    {
+      "id": "infested:spider_sica",
+      "required": false
+    },
+    {
+      "id": "spider_caves:spider_chestplate",
+      "required": false
+    },
+    {
+      "id": "mcda:spider_armor_chestplate",
+      "required": false
+    }
+  ]
+}

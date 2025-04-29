@@ -1,13 +1,9 @@
 package net.trashelemental.infested.entity.custom;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
@@ -32,101 +28,30 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.trashelemental.infested.entity.ModEntities;
 import net.trashelemental.infested.item.ModItems;
-import org.jetbrains.annotations.Nullable;
+import net.trashelemental.infested.junkyard_lib.entity.TamableEntity;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.Animation;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.Objects;
 
-public class BrilliantBeetleEntity extends TamableAnimal {
+public class BrilliantBeetleEntity extends TamableEntity implements GeoEntity {
 
 
-    public BrilliantBeetleEntity(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
-        super(pEntityType, pLevel);
+    public BrilliantBeetleEntity(EntityType<? extends TamableAnimal> entityType, Level level) {
+        super(entityType, level, Items.COCOA_BEANS, Items.COOKIE);
     }
-
-    public static final EntityDataAccessor<String> ANIMATION = SynchedEntityData.defineId(BrilliantBeetleEntity.class, EntityDataSerializers.STRING);
-
-    public final AnimationState idleAnimationState = new AnimationState();
-    private int idleAnimationTimeout = 0;
-    public final AnimationState fallAnimationState = new AnimationState();
-    private int fallAnimationTimeout = 0;
-
-
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(ANIMATION, "idle");
-        this.entityData.define(DATA_FLAGS_ID, (byte) 0);
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-
-        if (this.level().isClientSide) {
-            setupAnimationStates();
-            updateAnimationStates();
-        }
-
-        if (!this.level().isClientSide()) {
-            this.setClimbing(this.horizontalCollision);
-        }
-    }
-
-    private void setupAnimationStates() {
-        if (!idleAnimationState.isStarted()) {
-            this.idleAnimationState.start(this.tickCount);
-        }
-
-        if (this.isFalling() && !fallAnimationState.isStarted()) {
-            this.fallAnimationState.start(this.tickCount);
-        }
-    }
-
-    private void updateAnimationStates() {
-        String currentAnimation = this.entityData.get(ANIMATION);
-        if (this.isFalling()) {
-            if (!currentAnimation.equals("fall")) {
-                this.entityData.set(ANIMATION, "fall");
-            }
-        } else if (this.isWalking()) {
-            if (!currentAnimation.equals("walk")) {
-                this.entityData.set(ANIMATION, "walk");
-            }
-        } else {
-            if (!currentAnimation.equals("idle")) {
-                this.entityData.set(ANIMATION, "idle");
-            }
-        }
-    }
-
-    private boolean isFalling() {
-        return !this.onGround();
-    }
-
-    private boolean isWalking() {
-        return this.getDeltaMovement().lengthSqr() > 0.01;
-    }
-
-    @Override
-    protected void updateWalkAnimation(float pPartialTick) {
-        float f;
-        if (this.getPose() == Pose.STANDING) {
-            f = Math.min(pPartialTick * 6f, 1f);
-        } else {
-            f = 0f;
-        }
-        this.walkAnimation.update(f, 0.2f);
-    }
-
 
     @Override
     protected void registerGoals() {
-        super.registerGoals();
-        {
-
+        super.registerGoals(); {
             this.goalSelector.addGoal(0, new FollowOwnerGoal(this, 1, 10, 2, false) {
                 @Override
                 public boolean canUse() {
@@ -157,25 +82,11 @@ public class BrilliantBeetleEntity extends TamableAnimal {
             });
             this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, (float) 6));
             this.goalSelector.addGoal(9, new RandomLookAroundGoal(this));
-
         }
-    }
-
-    public static boolean follow(BrilliantBeetleEntity entity) {
-        if (entity == null)
-            return false;
-        return entity.isFollowing();
-    }
-
-    public static boolean wander(BrilliantBeetleEntity entity) {
-        if (entity == null)
-            return false;
-        return entity.isWandering();
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Animal.createLivingAttributes()
-
                 .add(Attributes.MAX_HEALTH, 20)
                 .add(Attributes.MOVEMENT_SPEED, 0.25D)
                 .add(Attributes.ATTACK_DAMAGE, 1)
@@ -183,12 +94,6 @@ public class BrilliantBeetleEntity extends TamableAnimal {
                 .add(Attributes.FOLLOW_RANGE, 16)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.3)
                 .add(Attributes.ATTACK_KNOCKBACK, 0);
-
-    }
-
-    @Override
-    public boolean isFood(ItemStack pStack) {
-        return pStack.is(Items.COOKIE);
     }
 
     //Creature Type
@@ -200,40 +105,26 @@ public class BrilliantBeetleEntity extends TamableAnimal {
 
     //Sound Events
     @Override
-    public SoundEvent getAmbientSound() {
-        return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.puffer_fish.ambient"));
-    }
-
-    @Override
     public void playStepSound(BlockPos pos, BlockState blockIn) {
-        this.playSound(Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.spider.step"))), 0.15f, 1);
+        this.playSound(Objects.requireNonNull(SoundEvents.SPIDER_STEP), 0.15f, 1);
     }
 
     @Override
     public SoundEvent getHurtSound(DamageSource ds) {
-        return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.puffer_fish.hurt"));
+        return SoundEvents.PUFFER_FISH_HURT;
     }
 
     @Override
     public SoundEvent getDeathSound() {
-        return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.puffer_fish.death"));
-    }
-
-    @Nullable
-    @Override
-    public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
-        return ModEntities.BRILLIANT_BEETLE.get().create(serverLevel);
+        return SoundEvents.PUFFER_FISH_DEATH;
     }
 
     //Spawning
-
     public static boolean canSpawn(EntityType<BrilliantBeetleEntity> entityType, LevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
         return Animal.checkAnimalSpawnRules(entityType, level, spawnType, position, random);
     }
 
-    //Custom Behavior
-
-    //Spider Climbing Behavior (Also some in defineSyncedData and tick.)
+    //Spider Climbing Behavior
     private static final EntityDataAccessor<Byte> DATA_FLAGS_ID = SynchedEntityData.defineId(BrilliantBeetleEntity.class, EntityDataSerializers.BYTE);
 
     protected PathNavigation createNavigation(Level world) {
@@ -258,6 +149,20 @@ public class BrilliantBeetleEntity extends TamableAnimal {
         this.entityData.set(DATA_FLAGS_ID, b0);
     }
 
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_FLAGS_ID, (byte) 0);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!this.level().isClientSide()) {
+            this.setClimbing(this.horizontalCollision);
+        }
+    }
+
     //Gliding Behavior
     @Override
     public void aiStep() {
@@ -278,32 +183,21 @@ public class BrilliantBeetleEntity extends TamableAnimal {
         return super.hurt(source, amount);
     }
 
+    protected void checkFallDamage(double pY, boolean pOnGround, BlockState pState, BlockPos pPos) {
+    }
+
     //On right click behavior
     @Override
-    public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
-        ItemStack itemstack = pPlayer.getItemInHand(pHand);
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
 
-        //Tries to tame if the item is a Cocoa Beans.
-        if (itemstack.getItem() == Items.COCOA_BEANS) {
-            this.usePlayerItem(pPlayer, pHand, itemstack);
-            if (!this.isTame()) {
-                this.tame(pPlayer);
-                this.BEHAVIOR = "FOLLOW";
-                this.level().broadcastEntityEvent(this, (byte) 7);
-                this.setPersistenceRequired();
-                return InteractionResult.sidedSuccess(this.level().isClientSide());
-            }
-        }
-
-        else if (this.isOwnedBy(pPlayer)) {
-
-            //Feeding it bug stew will give it speed for 1 minute.
+        if (this.isOwnedBy(player)) {
             if (itemstack.getItem() == ModItems.BUG_STEW.get()) {
                 if (!this.level().isClientSide) {
-                    if (!pPlayer.isCreative()) {
+                    if (!player.isCreative()) {
                         itemstack.shrink(1);
-                        if (!pPlayer.getInventory().add(new ItemStack(Items.BOWL))) {
-                            pPlayer.drop(new ItemStack(Items.BOWL), false);
+                        if (!player.getInventory().add(new ItemStack(Items.BOWL))) {
+                            player.drop(new ItemStack(Items.BOWL), false);
                         }
                     }
                     this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 1200, 1));
@@ -312,27 +206,12 @@ public class BrilliantBeetleEntity extends TamableAnimal {
                 return InteractionResult.sidedSuccess(this.level().isClientSide());
             }
 
-            //Cycle Behavior
-            else if (pPlayer.isCrouching()) {
-                cycleBehavior(pPlayer);
-                return InteractionResult.sidedSuccess(this.level().isClientSide());
-            }
-
-            //Start riding
-            else  {
-                pPlayer.startRiding(this);
+            if (!player.isCrouching()) {
+                player.startRiding(this);
                 return InteractionResult.sidedSuccess(this.level().isClientSide());
             }
         }
-
-        else {
-            InteractionResult retval = super.mobInteract(pPlayer, pHand);
-            if (retval == InteractionResult.SUCCESS || retval == InteractionResult.CONSUME) {
-                this.setPersistenceRequired();
-            }
-            return retval;
-        }
-        return InteractionResult.PASS;
+        return super.mobInteract(player, hand);
     }
 
     //Riding Behavior
@@ -364,53 +243,40 @@ public class BrilliantBeetleEntity extends TamableAnimal {
         return super.getPassengersRidingOffset() + -0.4;
     }
 
-    //Behavior
-    private String BEHAVIOR = "WANDER";
 
-    private void setBehaviorInPersistentData(String behavior) {
-        CompoundTag tag = this.getPersistentData();
-        tag.putString("Behavior", behavior);
-    }
-
-    public boolean isFollowing() {
-        return this.BEHAVIOR.equals("FOLLOW");
-    }
-
-    public boolean isWandering() {
-        return this.BEHAVIOR.equals("WANDER");
-    }
-
-    private void cycleBehavior(Player pPlayer) {
-        switch (this.BEHAVIOR) {
-            case "FOLLOW":
-                this.BEHAVIOR = "WANDER";
-                pPlayer.displayClientMessage(Component.literal("Brilliant Beetle will wander"), true);
-                break;
-            case "STAY":
-                this.BEHAVIOR = "FOLLOW";
-                pPlayer.displayClientMessage(Component.literal("Brilliant Beetle will follow"), true);
-                break;
-            case "WANDER":
-                this.BEHAVIOR = "STAY";
-                pPlayer.displayClientMessage(Component.literal("Brilliant Beetle will stay"), true);
-                break;
-        }
-        this.setBehaviorInPersistentData(this.BEHAVIOR);
-    }
-
-    //NBT Tags
-    @Override
-    public void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
-        compound.putString("Behavior", this.BEHAVIOR);
+    //GeckoLib
+    private boolean isFalling() {
+        return !this.onGround() && !this.isNoAi();
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
-        if (compound.contains("Behavior")) {
-            this.BEHAVIOR = compound.getString("Behavior");
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<GeoAnimatable>(this, "controller", 4, this::predicate));
+    }
+
+
+    private PlayState predicate(software.bernie.geckolib.core.animation.AnimationState<GeoAnimatable> state) {
+
+        if (isFalling()) {
+            state.getController().setAnimation(RawAnimation.begin().then("FALL", Animation.LoopType.LOOP));
+            return PlayState.CONTINUE;
         }
+
+        else if (state.isMoving()) {
+            state.getController().setAnimation(RawAnimation.begin().then("WALK", Animation.LoopType.LOOP));
+            return PlayState.CONTINUE;
+        }
+
+        state.getController().setAnimation(RawAnimation.begin().then("IDLE", Animation.LoopType.LOOP));
+        return PlayState.CONTINUE;
+
+    }
+
+    private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
     }
 
 

@@ -1,81 +1,51 @@
 package net.trashelemental.infested.entity.ai;
 
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.living.LivingChangeTargetEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.trashelemental.infested.entity.custom.MantisEntity;
-import net.trashelemental.infested.entity.custom.OrchidMantisEntity;
-import net.trashelemental.infested.infested;
 import net.trashelemental.infested.magic.effects.ModMobEffects;
-
-import javax.annotation.Nullable;
+import net.trashelemental.infested.util.event.UtilEvents;
+import net.trashelemental.infested.junkyard_lib.visual.particle.ParticleMethods;
 
 @Mod.EventBusSubscriber
 public class MantisEvents {
 
+    //When the mantis kills an arthropod, it is healed to max health.
     @SubscribeEvent
     public static void onEntityDeath(LivingDeathEvent event) {
-        if (event != null && event.getEntity() != null && event.getSource().getEntity() != null) {
-            execute(event, event.getEntity().level(), event.getEntity(), event.getSource().getEntity());
-        }
-    }
-
-    private static void execute(@Nullable Event event, Level world, Entity entity, Entity sourceEntity) {
-
-        //When the mantis kills an arthropod, it is healed to max health.
-        if (entity instanceof LivingEntity killedEntity &&
-                (sourceEntity instanceof MantisEntity || sourceEntity instanceof OrchidMantisEntity)) {
-
-            LivingEntity mantis = (LivingEntity) sourceEntity;
-
-            if (killedEntity.getMobType() == MobType.ARTHROPOD) {
-                mantis.setHealth(mantis.getMaxHealth());
-
-                ((ServerLevel) world).sendParticles(
-                        ParticleTypes.HAPPY_VILLAGER,
-                        mantis.getX(), mantis.getY() + 1, mantis.getZ(),
-                        10, 0.5, 0.5, 0.5, 0.1);
-
-                world.playSound(null, mantis.blockPosition(),
-                        SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, 1.0F, 1.0F);
-                infested.queueServerWork(5, () -> world.playSound(null, mantis.blockPosition(),
-                        SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, 1.0F, 1.0F));
-                infested.queueServerWork(10, () -> world.playSound(null, mantis.blockPosition(),
-                        SoundEvents.GENERIC_EAT, SoundSource.NEUTRAL, 1.0F, 1.0F));
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public static void onEntitySetsAttackTarget(LivingChangeTargetEvent event) {
-        execute(event, event.getEntity());
-    }
-
-    public static void execute(Entity sourceentity) {
-        execute(null, sourceentity);
-    }
-
-    private static void execute(@Nullable Event event, Entity sourceentity) {
-        if (!(sourceentity instanceof MantisEntity || sourceentity instanceof OrchidMantisEntity)) {
+        if (!(event.getSource().getEntity() instanceof MantisEntity mantis)) {
             return;
         }
 
-        LivingEntity mantis = (LivingEntity) sourceentity;
+        if (!(event.getEntity().getMobType() == MobType.ARTHROPOD)) {
+            return;
+        }
+
+        Level level = event.getEntity().level();
+
+        mantis.setHealth(mantis.getMaxHealth());
+
+        ParticleMethods.ParticlesAroundServerSide(level, ParticleTypes.HAPPY_VILLAGER,
+                mantis.getX(), mantis.getY(), mantis.getZ(), 10, 1);
+
+        UtilEvents.playEatSound(level, mantis);
+    }
+
+    //When a mantis begins targeting an entity, it applies ambush to itself if it can.
+    @SubscribeEvent
+    public static void onEntitySetsAttackTarget(LivingChangeTargetEvent event) {
+        if (!(event.getEntity() instanceof MantisEntity mantis)) {
+            return;
+        }
 
         if (!mantis.hasEffect(ModMobEffects.AMBUSH_COOLDOWN.get())) {
             mantis.addEffect(new MobEffectInstance(ModMobEffects.AMBUSH.get(), 300, 0, false, true));
         }
     }
-
 }

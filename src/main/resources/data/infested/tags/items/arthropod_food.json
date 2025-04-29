@@ -1,0 +1,8 @@
+{
+  "values": [
+    {
+      "id": "infested:raw_grub",
+      "required": false
+    }
+  ]
+}

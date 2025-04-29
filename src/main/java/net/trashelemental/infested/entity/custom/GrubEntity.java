@@ -1,16 +1,18 @@
 package net.trashelemental.infested.entity.custom;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -24,48 +26,31 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.trashelemental.infested.entity.ModEntities;
+import net.trashelemental.infested.magic.effects.ModMobEffects;
+import net.trashelemental.infested.junkyard_lib.visual.particle.ParticleMethods;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.Animation;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.Objects;
 
-public class GrubEntity extends Animal {
+public class GrubEntity extends Animal implements GeoEntity {
 
-
-   public GrubEntity(EntityType<? extends Animal> pEntityType, Level pLevel) {
+    public GrubEntity(EntityType<? extends Animal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-    }
-
-    public final AnimationState idleAnimationState = new AnimationState();
-    private int idleAnimationTimeout = 0;
-
-    @Override
-    public void tick() {
-        super.tick();
-
-        if(this.level().isClientSide) {
-            setupAnimationStates();
-        }
-    }
-
-    private void setupAnimationStates() {
-        if (!idleAnimationState.isStarted()) {
-            this.idleAnimationState.start(this.tickCount);
-        }
-    }
-
-    @Override
-    protected void updateWalkAnimation(float pPartialTick) {
-        float f;
-        if(this.getPose() == Pose.STANDING) {
-            f = Math.min(pPartialTick * 6f, 1f);
-        } else {
-            f = 0f;
-        }
-        this.walkAnimation.update(f, 0.2f);
     }
 
     @Override
@@ -79,7 +64,8 @@ public class GrubEntity extends Animal {
                     return this.mob.getBbWidth() * this.mob.getBbWidth() + entity.getBbWidth();
                 }
             });
-            this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, ZombifiedPiglin.class, false, false));
+            this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, ZombifiedPiglin.class, 10, true, false,
+                    (target) -> !target.hasEffect(ModMobEffects.PARASITIC_INFECTION.get())));
             this.goalSelector.addGoal(3, new LeapAtTargetGoal(this, (float) 0.5f));
 
             this.goalSelector.addGoal(4, new FloatGoal(this));
@@ -93,14 +79,12 @@ public class GrubEntity extends Animal {
 
     public static AttributeSupplier.Builder createAttributes() {
        return Animal.createLivingAttributes()
-
                .add(Attributes.MAX_HEALTH, 4)
                .add(Attributes.MOVEMENT_SPEED, 0.2)
                .add(Attributes.ATTACK_DAMAGE, 1)
                .add(Attributes.ARMOR, 0)
                .add(Attributes.FOLLOW_RANGE, 26)
                .add(Attributes.ATTACK_KNOCKBACK, 0);
-
     }
 
     @Override
@@ -117,20 +101,16 @@ public class GrubEntity extends Animal {
 
     //Sound Events
     @Override
-    public SoundEvent getAmbientSound() {
-        return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.cod.ambient"));
-    }
-    @Override
     public void playStepSound(BlockPos pos, BlockState blockIn) {
-        this.playSound(Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.silverfish.step"))), 0.15f, 1);
+        this.playSound(Objects.requireNonNull(SoundEvents.SILVERFISH_STEP), 0.15f, 1);
     }
     @Override
     public SoundEvent getHurtSound(DamageSource ds) {
-        return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.cod.hurt"));
+        return SoundEvents.COD_HURT;
     }
     @Override
     public SoundEvent getDeathSound() {
-        return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.cod.death"));
+        return SoundEvents.COD_DEATH;
     }
 
     @Nullable
@@ -139,18 +119,21 @@ public class GrubEntity extends Animal {
         return null;
     }
 
-    //Spawning
 
-    public static boolean canSpawn(EntityType<GrubEntity> entityType, LevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
-        BlockState blockBelow = level.getBlockState(position.below());
-        return !blockBelow.is(Blocks.NETHER_WART_BLOCK)
-                && !blockBelow.is(Blocks.SHROOMLIGHT)
-                && !blockBelow.is(Blocks.LAVA)
-                && !blockBelow.is(Blocks.MAGMA_BLOCK)
-                && !blockBelow.is(Blocks.GLOWSTONE)
-                && !blockBelow.is(Blocks.AIR)
-                && !level.getBlockState(position.below()).getFluidState().is(FluidTags.LAVA)
-                && !level.getBlockState(position.below()).is(Blocks.FIRE);
+    //Spawning
+    public static boolean canSpawn(EntityType<GrubEntity> type, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        BlockState below = level.getBlockState(pos.below());
+        BlockState current = level.getBlockState(pos);
+
+        return current.isAir() &&
+                below.isFaceSturdy(level, pos.below(), Direction.UP) &&
+                !below.is(Blocks.NETHER_WART_BLOCK) &&
+                !below.is(Blocks.SHROOMLIGHT) &&
+                !below.is(Blocks.WEEPING_VINES) &&
+                !below.is(Blocks.WEEPING_VINES_PLANT) &&
+                !below.is(Blocks.GLOWSTONE) &&
+                !below.is(Blocks.AIR) &&
+                !below.is(Blocks.CRIMSON_STEM);
     }
 
     //Custom Behaviors
@@ -162,23 +145,19 @@ public class GrubEntity extends Animal {
         ItemStack itemStack = pPlayer.getItemInHand(pHand);
 
         if (itemStack.is(Items.ROTTEN_FLESH)) {
+
             if (!pPlayer.isCreative()) { itemStack.shrink(1); }
+
             this.playSound(SoundEvents.GENERIC_EAT);
-            for (int i = 0; i < 5; ++i) {
-                double d0 = this.random.nextGaussian() * 0.02D;
-                double d1 = this.random.nextGaussian() * 0.02D;
-                double d2 = this.random.nextGaussian() * 0.02D;
-                this.level().addParticle(ParticleTypes.HAPPY_VILLAGER,
-                        this.getX() + (double)(this.random.nextFloat() * this.getBbWidth() * 2.0F) - (double)this.getBbWidth(),
-                        this.getY() + 0.5D + (double)(this.random.nextFloat() * this.getBbHeight()),
-                        this.getZ() + (double)(this.random.nextFloat() * this.getBbWidth() * 2.0F) - (double)this.getBbWidth(),
-                        d0, d1, d2);
-            }
+            ParticleMethods.ParticlesAroundServerSide(level(), ParticleTypes.HAPPY_VILLAGER,
+                    this.getX(), this.getY(), this.getZ(), 5, 1);
 
             if (Math.random() >= 0.9) {
+
                 if (!this.level().isClientSide()) {
                     this.discard();
                 }
+
                 if (this.level() instanceof ServerLevel _level) {
                     Entity entityToSpawn = ModEntities.CRIMSON_BEETLE.get().spawn(_level, BlockPos.containing(this.getX(), this.getY(), this.getZ()), MobSpawnType.MOB_SUMMONED);
                     if (entityToSpawn != null) {
@@ -187,19 +166,15 @@ public class GrubEntity extends Animal {
                 }
             }
             return InteractionResult.SUCCESS;
-        } else if (itemStack.is(Items.COCOA_BEANS)) {
+        }
+
+        else if (itemStack.is(Items.COCOA_BEANS)) {
+
             if (!pPlayer.isCreative()) { itemStack.shrink(1); }
+
             this.playSound(SoundEvents.GENERIC_EAT);
-            for (int i = 0; i < 5; ++i) {
-                double d0 = this.random.nextGaussian() * 0.02D;
-                double d1 = this.random.nextGaussian() * 0.02D;
-                double d2 = this.random.nextGaussian() * 0.02D;
-                this.level().addParticle(ParticleTypes.HAPPY_VILLAGER,
-                        this.getX() + (double)(this.random.nextFloat() * this.getBbWidth() * 2.0F) - (double)this.getBbWidth(),
-                        this.getY() + 0.5D + (double)(this.random.nextFloat() * this.getBbHeight()),
-                        this.getZ() + (double)(this.random.nextFloat() * this.getBbWidth() * 2.0F) - (double)this.getBbWidth(),
-                        d0, d1, d2);
-            }
+            ParticleMethods.ParticlesAroundServerSide(level(), ParticleTypes.HAPPY_VILLAGER,
+                    this.getX(), this.getY(), this.getZ(), 5, 1);
 
             if (Math.random() >= 0.9) {
                 if (!this.level().isClientSide()) {
@@ -217,8 +192,7 @@ public class GrubEntity extends Animal {
         return super.mobInteract(pPlayer, pHand);
     }
 
-    //Spawns 2-3 Grubs when breeding Crimson Beetles, rather than 1. Also sets the offspring to be an adult because
-    //it messes with the animations if it's a baby.
+    //Spawns 2-3 Grubs when breeding Crimson Beetles, rather than 1.
     @Override
     public void onAddedToWorld() {
         super.onAddedToWorld();
@@ -239,5 +213,48 @@ public class GrubEntity extends Animal {
         }
     }
 
+    @Override
+    public boolean doHurtTarget(Entity entity) {
+
+        Level level = this.level();
+        LivingEntity target = (LivingEntity) entity;
+
+        level.levelEvent(2001, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()),
+                Block.getId(Blocks.CRIMSON_STEM.defaultBlockState()));
+        level.playSound(null, new BlockPos((int) entity.getX(), (int) entity.getY(), (int) entity.getZ()),
+                SoundEvents.BEEHIVE_ENTER, SoundSource.NEUTRAL, 1, 1);
+        if (!target.hasEffect(ModMobEffects.PARASITIC_INFECTION.get())) {
+            target.addEffect(new MobEffectInstance(ModMobEffects.PARASITIC_INFECTION.get(), 2400, 1));
+        }
+        this.discard();
+
+        return super.doHurtTarget(entity);
+    }
+
+    //GeckoLib
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<GeoAnimatable>(this, "controller", 4, this::predicate));
+    }
+
+
+    private PlayState predicate(software.bernie.geckolib.core.animation.AnimationState<GeoAnimatable> state) {
+
+        if(state.isMoving()) {
+            state.getController().setAnimation(RawAnimation.begin().then("WALK", Animation.LoopType.LOOP));
+            return PlayState.CONTINUE;
+        }
+
+        state.getController().setAnimation(RawAnimation.begin().then("IDLE", Animation.LoopType.LOOP));
+        return PlayState.CONTINUE;
+
+    }
+
+    private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
+    }
 
 }

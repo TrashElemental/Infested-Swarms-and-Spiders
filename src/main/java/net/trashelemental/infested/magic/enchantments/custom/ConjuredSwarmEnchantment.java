@@ -4,7 +4,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
-import net.trashelemental.infested.item.ModItems;
 import net.trashelemental.infested.item.custom.SwarmCellItem;
 
 public class ConjuredSwarmEnchantment extends Enchantment {

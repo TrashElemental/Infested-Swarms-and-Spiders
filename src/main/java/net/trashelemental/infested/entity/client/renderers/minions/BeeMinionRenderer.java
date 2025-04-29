@@ -4,14 +4,14 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.trashelemental.infested.entity.client.models.InfestedBeeModel;
+import net.trashelemental.infested.entity.client.models.BeeMinionModel;
 import net.trashelemental.infested.entity.custom.minions.BeeMinionEntity;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class BeeMinionRenderer extends GeoEntityRenderer<BeeMinionEntity> {
 
     public BeeMinionRenderer(EntityRendererProvider.Context renderManager) {
-        super(renderManager, new InfestedBeeModel());
+        super(renderManager, new BeeMinionModel());
     }
 
     @Override

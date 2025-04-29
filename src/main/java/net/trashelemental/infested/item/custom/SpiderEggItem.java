@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.trashelemental.infested.entity.ModEntities;
 import net.trashelemental.infested.entity.custom.TamedSpiderEntity;
+import net.trashelemental.infested.junkyard_lib.visual.particle.ParticleMethods;
 
 import java.util.Random;
 
@@ -61,19 +62,16 @@ public class SpiderEggItem extends Item {
             ((ServerLevel) level).addFreshEntity(spider);
             spider.setOwnerUUID(player.getUUID());
 
-        if (!player.isCreative()) {
-            itemstack.shrink(1);
-        }
+        ParticleMethods.ParticlesAroundServerSide(level, ParticleTypes.POOF,
+                spider.getX(), spider.getY(), spider.getZ(), 5, 0.5);
 
         level.gameEvent(player, GameEvent.ENTITY_PLACE, blockPos);
-
         level.playSound(null, blockPos,
                 SoundEvents.SNIFFER_EGG_HATCH, SoundSource.PLAYERS, 1.0F, 1.0F);
 
-        ((ServerLevel) level).sendParticles(ParticleTypes.POOF,
-                spider.getX(), spider.getY(), spider.getZ(),
-                10, 0.5, 0.5, 0.5, 0.1
-        );
+        if (!player.isCreative()) {
+            itemstack.shrink(1);
+        }
 
         return InteractionResult.CONSUME;
     }

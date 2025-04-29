@@ -21,7 +21,7 @@ public class ModFoods {
     public static final FoodProperties BUG_STEW = new FoodProperties.Builder().
             nutrition(8).
             saturationMod(0.6f).
-            effect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 200, 0), 1.0F).
+            effect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 400, 0), 1.0F).
             build();
 
 }

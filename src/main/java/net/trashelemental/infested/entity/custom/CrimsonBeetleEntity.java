@@ -1,9 +1,11 @@
 package net.trashelemental.infested.entity.custom;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
@@ -23,43 +25,22 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.trashelemental.infested.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.Animation;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.Objects;
 
-public class CrimsonBeetleEntity extends Animal {
+public class CrimsonBeetleEntity extends Animal implements GeoEntity {
 
-
-   public CrimsonBeetleEntity(EntityType<? extends Animal> pEntityType, Level pLevel) {
+    public CrimsonBeetleEntity(EntityType<? extends Animal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-    }
-
-    public final AnimationState idleAnimationState = new AnimationState();
-   private int idleAnimationTimeout = 0;
-
-    @Override
-    public void tick() {
-        super.tick();
-
-        if(this.level().isClientSide) {
-            setupAnimationStates();
-        }
-    }
-
-    private void setupAnimationStates() {
-        if (!idleAnimationState.isStarted()) {
-            this.idleAnimationState.start(this.tickCount);
-        }
-    }
-
-    @Override
-    protected void updateWalkAnimation(float pPartialTick) {
-        float f;
-        if(this.getPose() == Pose.STANDING) {
-            f = Math.min(pPartialTick * 6f, 1f);
-        } else {
-            f = 0f;
-        }
-        this.walkAnimation.update(f, 0.2f);
     }
 
     @Override
@@ -86,14 +67,12 @@ public class CrimsonBeetleEntity extends Animal {
 
     public static AttributeSupplier.Builder createAttributes() {
        return Animal.createLivingAttributes()
-
                .add(Attributes.MAX_HEALTH, 10)
                .add(Attributes.MOVEMENT_SPEED, 0.25D)
                .add(Attributes.ATTACK_DAMAGE, 2)
                .add(Attributes.ARMOR, 1)
                .add(Attributes.FOLLOW_RANGE, 16)
                .add(Attributes.ATTACK_KNOCKBACK, 0);
-
     }
 
     @Override
@@ -110,38 +89,35 @@ public class CrimsonBeetleEntity extends Animal {
 
     //Sound Events
     @Override
-    public SoundEvent getAmbientSound() {
-        return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.tropical_fish.ambient"));
-    }
-
-    @Override
     public void playStepSound(BlockPos pos, BlockState blockIn) {
-        this.playSound(Objects.requireNonNull(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.spider.step"))), 0.15f, 1);
+        this.playSound(Objects.requireNonNull(SoundEvents.SPIDER_STEP), 0.15f, 1);
     }
 
     @Override
     public SoundEvent getHurtSound(DamageSource ds) {
-        return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.tropical_fish.hurt"));
+        return SoundEvents.TROPICAL_FISH_HURT;
     }
 
     @Override
     public SoundEvent getDeathSound() {
-        return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("entity.tropical_fish.death"));
+        return SoundEvents.TROPICAL_FISH_DEATH;
     }
 
     //Spawning
-    public static boolean canSpawn(EntityType<CrimsonBeetleEntity> entityType, LevelAccessor level, MobSpawnType spawnType, BlockPos position, RandomSource random) {
-        return !level.getBlockState(position.below()).is(Blocks.NETHER_WART_BLOCK)
-                && !level.getBlockState(position.below()).is(Blocks.SHROOMLIGHT)
-                && !level.getBlockState(position.below()).is(Blocks.WEEPING_VINES)
-                && !level.getBlockState(position.below()).is(Blocks.WEEPING_VINES_PLANT)
-                && !level.getBlockState(position.below()).is(Blocks.GLOWSTONE)
-                && !level.getBlockState(position.below()).is(Blocks.AIR)
-                && !level.getBlockState(position.below()).is(Blocks.CRIMSON_STEM);
+    public static boolean canSpawn(EntityType<CrimsonBeetleEntity> type, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        BlockState below = level.getBlockState(pos.below());
+        BlockState current = level.getBlockState(pos);
+
+        return current.isAir() &&
+                below.isFaceSturdy(level, pos.below(), Direction.UP) &&
+                !below.is(Blocks.NETHER_WART_BLOCK) &&
+                !below.is(Blocks.SHROOMLIGHT) &&
+                !below.is(Blocks.WEEPING_VINES) &&
+                !below.is(Blocks.WEEPING_VINES_PLANT) &&
+                !below.is(Blocks.GLOWSTONE) &&
+                !below.is(Blocks.AIR) &&
+                !below.is(Blocks.CRIMSON_STEM);
     }
-
-
-
 
     //Custom Behavior
 
@@ -152,5 +128,31 @@ public class CrimsonBeetleEntity extends Animal {
         return ModEntities.GRUB.get().create(serverLevel);
     }
 
+
+    //GeckoLib
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<GeoAnimatable>(this, "controller", 4, this::predicate));
+    }
+
+
+    private PlayState predicate(software.bernie.geckolib.core.animation.AnimationState<GeoAnimatable> state) {
+
+        if(state.isMoving()) {
+            state.getController().setAnimation(RawAnimation.begin().then("WALK", Animation.LoopType.LOOP));
+            return PlayState.CONTINUE;
+        }
+
+        state.getController().setAnimation(RawAnimation.begin().then("IDLE", Animation.LoopType.LOOP));
+        return PlayState.CONTINUE;
+
+    }
+
+    private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
+    }
 
 }

@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.trashelemental.infested.entity.ModEntities;
-import net.trashelemental.infested.entity.custom.minions.TamedSilverfishEntity;
+import net.trashelemental.infested.entity.custom.minions.SilverfishMinionEntity;
 
 import java.util.Random;
 
@@ -55,7 +55,7 @@ public class SilverfishEggsItem extends Item {
 
         Random random = new Random();
         for (int i = 0; i < 2 + random.nextInt(2); i++) {
-            TamedSilverfishEntity silverfish = new TamedSilverfishEntity(ModEntities.TAMED_SILVERFISH.get(), level);
+            SilverfishMinionEntity silverfish = new SilverfishMinionEntity(ModEntities.SILVERFISH_MINION.get(), level);
             silverfish.setAge(-300);
             silverfish.setTame(true);
             silverfish.moveTo(spawnPos.getX() + random.nextDouble(), spawnPos.getY(), spawnPos.getZ() + random.nextDouble(), random.nextFloat() * 360F, 0);

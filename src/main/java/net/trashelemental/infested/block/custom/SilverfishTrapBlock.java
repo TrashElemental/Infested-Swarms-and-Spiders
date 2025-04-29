@@ -33,7 +33,7 @@ public class SilverfishTrapBlock extends Block {
                 int count = Mth.nextInt(random, 5, 8);
 
                 for (int i = 0; i < count; i++) {
-                    Entity entity = ModEntities.ATTACK_SILVERFISH.get().create(serverLevel);
+                    Entity entity = ModEntities.SILVERFISH_MINION.get().create(serverLevel);
                     if (entity != null) {
                         entity.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0, 0);
                         serverLevel.addFreshEntity(entity);

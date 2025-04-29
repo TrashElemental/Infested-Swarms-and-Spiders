@@ -1,0 +1,139 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "crimson_beetle",
+					"pivot": [0.03407, -3.5, 0.58445]
+				},
+				{
+					"name": "Head",
+					"parent": "crimson_beetle",
+					"pivot": [0.03407, 3.5, -3.91555]
+				},
+				{
+					"name": "Head2",
+					"parent": "Head",
+					"pivot": [0.03407, -3.5, 0.58445],
+					"cubes": [
+						{"origin": [-3.96593, 1.5, -7.41555], "size": [8, 5, 4], "uv": [0, 31]}
+					]
+				},
+				{
+					"name": "Antenna",
+					"parent": "Head",
+					"pivot": [0.03407, -3.5, 0.58445]
+				},
+				{
+					"name": "Lantenna",
+					"parent": "Antenna",
+					"pivot": [-2.96593, 6.5, -6.41555],
+					"cubes": [
+						{"origin": [-5.96593, 6.5, -11.41555], "size": [3, 0, 5], "pivot": [-2.96593, 6.5, -6.41555], "rotation": [-22.5, 0, 0], "uv": [0, 16], "mirror": true}
+					]
+				},
+				{
+					"name": "Rantenna",
+					"parent": "Antenna",
+					"pivot": [2.03407, 6.5, -6.41555],
+					"cubes": [
+						{"origin": [3.37982, 6.98723, -11.2526], "size": [3, 0, 5], "pivot": [3.37982, 6.98723, -6.2526], "rotation": [-22.5, 0, 0], "uv": [0, 16]}
+					]
+				},
+				{
+					"name": "Mandibles",
+					"parent": "Head",
+					"pivot": [0.03407, -3.5, 0.58445]
+				},
+				{
+					"name": "Rmandible",
+					"parent": "Mandibles",
+					"pivot": [3.03407, 1.5, -5.41555],
+					"cubes": [
+						{"origin": [1.03407, 2, -11.66555], "size": [5, 0, 5], "pivot": [4.03407, 2, -6.66555], "rotation": [5, 0, 0], "uv": [-2, 0]}
+					]
+				},
+				{
+					"name": "Lmandible",
+					"parent": "Mandibles",
+					"pivot": [-2.96593, 1.5, -6.41555],
+					"cubes": [
+						{"origin": [-5.96593, 2, -11.66555], "size": [5, 0, 5], "pivot": [-3.96593, 2, -6.66555], "rotation": [5, 0, 0], "uv": [-2, 0], "mirror": true}
+					]
+				},
+				{
+					"name": "Body",
+					"parent": "crimson_beetle",
+					"pivot": [0.03407, 3.5, 2.58445],
+					"cubes": [
+						{"origin": [-4.96593, 2.5, -3.41555], "size": [10, 2, 12], "uv": [0, 16]},
+						{"origin": [-5.96593, 4.25, -3.91555], "size": [12, 3, 13], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "Legs",
+					"parent": "crimson_beetle",
+					"pivot": [-13.96593, 3, 6.58445]
+				},
+				{
+					"name": "Lleg1",
+					"parent": "Legs",
+					"pivot": [-3.96593, 4, -1.41555],
+					"cubes": [
+						{"origin": [-12.96593, 3, -2.41555], "size": [9, 2, 2], "pivot": [-4.96593, 4, -1.41555], "rotation": [3.09472, -22.29711, -23.11003], "uv": [37, 0]}
+					]
+				},
+				{
+					"name": "Rleg1",
+					"parent": "Legs",
+					"pivot": [4.03407, 3, -2.41555],
+					"cubes": [
+						{"origin": [4.03407, 3, -2.41555], "size": [9, 2, 2], "pivot": [4.03407, 4, -1.41555], "rotation": [3.09472, 22.29711, 25.61003], "uv": [37, 0]}
+					]
+				},
+				{
+					"name": "Lleg2",
+					"parent": "Legs",
+					"pivot": [-3.96593, 4, 2.58445],
+					"cubes": [
+						{"origin": [-12.96593, 3, 1.58445], "size": [9, 2, 2], "pivot": [-4.96593, 4, 2.58445], "rotation": [0, 0, -22.5], "uv": [37, 0]}
+					]
+				},
+				{
+					"name": "Rleg2",
+					"parent": "Legs",
+					"pivot": [4.03407, 4, 2.58445],
+					"cubes": [
+						{"origin": [4.03407, 3, 1.58445], "size": [9, 2, 2], "pivot": [3.03407, 4, 2.58445], "rotation": [0, 0, 20], "uv": [37, 0]}
+					]
+				},
+				{
+					"name": "Lleg3",
+					"parent": "Legs",
+					"pivot": [-3.96593, 4, 6.58445],
+					"rotation": [0, 0, -5],
+					"cubes": [
+						{"origin": [-12.96593, 3, 5.58445], "size": [9, 2, 2], "pivot": [-4.96593, 4, 6.58445], "rotation": [-3.49226, 34.84748, -21.0963], "uv": [37, 0]}
+					]
+				},
+				{
+					"name": "Rleg3",
+					"parent": "Legs",
+					"pivot": [4.03407, 4, 6.58445],
+					"cubes": [
+						{"origin": [4.03407, 3, 5.58445], "size": [9, 2, 2], "pivot": [4.03407, 4, 6.58445], "rotation": [-5.22206, -34.65749, 26.63039], "uv": [37, 0]}
+					]
+				}
+			]
+		}
+	]
+}

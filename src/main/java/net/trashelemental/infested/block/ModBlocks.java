@@ -19,46 +19,33 @@ public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS =
             DeferredRegister.create(ForgeRegistries.BLOCKS, infested.MOD_ID);
 
-
     // Building Blocks
     public static final RegistryObject<Block> CHITIN_BLOCK = registerblock("chitin_block",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.COAL_BLOCK)));
-
     public static final RegistryObject<Block> CHITIN_SLAB = registerblock("chitin_slab",
             () -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.COAL_BLOCK)));
-
     public static final RegistryObject<Block> CHITIN_STAIRS = registerblock("chitin_stairs",
             () -> new StairBlock(() -> ModBlocks.CHITIN_BLOCK.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.COAL_BLOCK)));
-
     public static final RegistryObject<Block> CHITIN_WALL = registerblock("chitin_wall",
             () -> new WallBlock(BlockBehaviour.Properties.copy(Blocks.COAL_BLOCK)));
-
     public static final RegistryObject<Block> CHITIN_BRICKS = registerblock("chitin_bricks",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.COAL_BLOCK)));
-
     public static final RegistryObject<Block> CHITIN_BRICK_SLAB = registerblock("chitin_brick_slab",
             () -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.COAL_BLOCK)));
-
     public static final RegistryObject<Block> CHITIN_BRICK_STAIRS = registerblock("chitin_brick_stairs",
             () -> new StairBlock(() -> ModBlocks.CHITIN_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.COAL_BLOCK)));
-
     public static final RegistryObject<Block> CHITIN_BRICK_WALL = registerblock("chitin_brick_wall",
             () -> new WallBlock(BlockBehaviour.Properties.copy(Blocks.COAL_BLOCK)));
-
     public static final RegistryObject<Block> CHISELED_CHITIN_BRICKS = registerblock("chiseled_chitin_bricks",
             () -> new ModFlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.QUARTZ_PILLAR)));
-
 
     // Functional Blocks
     public static final RegistryObject<Block> SILVERFISH_TRAP = registerblock("silverfish_trap",
             () -> new SilverfishTrapBlock(BlockBehaviour.Properties.copy(Blocks.PISTON)));
-
     public static final RegistryObject<Block> SPIDER_TRAP = registerblock("spider_trap",
             () -> new SpiderTrapBlock(BlockBehaviour.Properties.copy(Blocks.PISTON)));
-
     public static final RegistryObject<Block> SPINNERET = registerblock("spinneret",
             () -> new SpinneretBlock(BlockBehaviour.Properties.copy(Blocks.PISTON)));
-
     public static final RegistryObject<Block> COBWEB_TRAP = registerblock("cobweb_trap",
             () -> new CobwebTrapBlock(BlockBehaviour.Properties.copy(Blocks.COBWEB)));
 

@@ -36,15 +36,11 @@ public class InfestedEnchantment extends Enchantment {
                 stack.is(Items.GOLDEN_CHESTPLATE) ||
                 stack.is(Items.DIAMOND_CHESTPLATE) ||
                 stack.is(Items.NETHERITE_CHESTPLATE) ||
-                stack.is(ModItems.CHITIN_CHESTPLATE.get()) ||
-                stack.is(ModItems.SPIDER_CHESTPLATE.get()) ||
-                stack.is(ItemTags.create(new ResourceLocation("minecraft:chest_armor"))) ||
-                stack.is(ItemTags.create(new ResourceLocation("forge:chest_armor"))) ||
-                stack.is(ItemTags.create(new ResourceLocation("neoforge:chest_armor"))) ||
-                stack.is(ItemTags.create(new ResourceLocation("forge:chestplates"))) ||
-                stack.is(ItemTags.create(new ResourceLocation("neoforge:chestplates"))) ||
-                stack.is(ItemTags.create(new ResourceLocation("forge:shields"))) ||
-                stack.is(ItemTags.create(new ResourceLocation("neoforge:shields")));
+                stack.is(ItemTags.create(new ResourceLocation("forge:armors/chestplates"))) ||
+                stack.is(ItemTags.create(new ResourceLocation("forge:armors/chest"))) ||
+                stack.is(ItemTags.create(new ResourceLocation("forge:armors/chest_armors"))) ||
+                stack.is(ItemTags.create(new ResourceLocation("forge:tools/shields"))) ||
+                stack.is(ItemTags.create(new ResourceLocation("forge:shields")));
     }
 }
 

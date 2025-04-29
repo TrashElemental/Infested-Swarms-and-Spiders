@@ -6,7 +6,11 @@
     "birch_forest",
     "dark_forest",
     "forest",
-    "old_growth_birch_forest"
+    "old_growth_birch_forest",
+    "flower_forest",
+    "sunflower_plains",
+    "meadow",
+    "cherry_grove"
   ],
   "spawners": {
     "type": "infested:mantis",

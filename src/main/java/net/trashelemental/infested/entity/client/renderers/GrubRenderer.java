@@ -3,29 +3,24 @@ package net.trashelemental.infested.entity.client.renderers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.trashelemental.infested.entity.ModEventBusEvents;
 import net.trashelemental.infested.entity.client.models.GrubModel;
 import net.trashelemental.infested.entity.custom.GrubEntity;
-import net.trashelemental.infested.infested;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class GrubRenderer extends MobRenderer<GrubEntity, GrubModel<GrubEntity>> {
-    public GrubRenderer(EntityRendererProvider.Context pContext) {
-        super(pContext, new GrubModel<>(pContext.bakeLayer(ModEventBusEvents.GRUB_LAYER)), 0.3f);
+public class GrubRenderer extends GeoEntityRenderer<GrubEntity> {
+
+    public GrubRenderer(EntityRendererProvider.Context renderManager) {
+        super(renderManager, new GrubModel());
     }
 
     @Override
-    public ResourceLocation getTextureLocation(GrubEntity GrubEntity) {
-        return new ResourceLocation(infested.MOD_ID, "textures/entity/grub.png");
+    public ResourceLocation getTextureLocation(GrubEntity entity) {
+        return new ResourceLocation("infested", "textures/entity/grub.png");
     }
 
     @Override
-    public void render(GrubEntity pEntity, float pEntityYaw, float pPartialTicks, PoseStack pPoseStack,
-                       MultiBufferSource pBuffer, int pPackedLight) {
-
-
-
-        super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
+    public void render(GrubEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight) {
+        super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }
 }

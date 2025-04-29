@@ -12,9 +12,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.trashelemental.infested.entity.ModEntities;
-import net.trashelemental.infested.entity.custom.minions.AttackBeeEntity;
-import net.trashelemental.infested.entity.custom.minions.AttackSilverfishEntity;
-import net.trashelemental.infested.entity.custom.minions.AttackSpiderEntity;
+import net.trashelemental.infested.entity.custom.minions.BeeMinionEntity;
+import net.trashelemental.infested.entity.custom.minions.SilverfishMinionEntity;
+import net.trashelemental.infested.entity.custom.minions.SpiderMinionEntity;
 import net.trashelemental.infested.item.ModItems;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -34,7 +34,7 @@ public class ModDispenserExtensions {
                 BlockPos spawnPos = dispenserPos.relative(direction);
 
                 if (world instanceof ServerLevel serverWorld) {
-                    AttackSilverfishEntity silverfish = ModEntities.ATTACK_SILVERFISH.get().create(serverWorld);
+                    SilverfishMinionEntity silverfish = ModEntities.SILVERFISH_MINION.get().create(serverWorld);
                     if (silverfish != null) {
                         silverfish.moveTo(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, direction.toYRot(), 0.0F);
                         serverWorld.addFreshEntity(silverfish);
@@ -60,7 +60,7 @@ public class ModDispenserExtensions {
                 BlockPos spawnPos = dispenserPos.relative(direction);
 
                 if (world instanceof ServerLevel serverWorld) {
-                    AttackBeeEntity bee = ModEntities.ATTACK_BEE.get().create(serverWorld);
+                    BeeMinionEntity bee = ModEntities.BEE_MINION.get().create(serverWorld);
                     if (bee != null) {
                         bee.moveTo(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, direction.toYRot(), 0.0F);
                         serverWorld.addFreshEntity(bee);
@@ -86,7 +86,7 @@ public class ModDispenserExtensions {
                 BlockPos spawnPos = dispenserPos.relative(direction);
 
                 if (world instanceof ServerLevel serverWorld) {
-                    AttackSpiderEntity spider = ModEntities.ATTACK_SPIDER.get().create(serverWorld);
+                    SpiderMinionEntity spider = ModEntities.SPIDER_MINION.get().create(serverWorld);
                     if (spider != null) {
                         spider.moveTo(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, direction.toYRot(), 0.0F);
                         serverWorld.addFreshEntity(spider);

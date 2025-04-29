@@ -101,6 +101,147 @@ public class JEIBrewingRecipes implements IModPlugin {
                 potion2.copy()
         ));
 
+        ingredientStack.add(new ItemStack(ModItems.MANTIS_CLAW.get()));
+        PotionUtils.setPotion(potion, Potions.AWKWARD);
+        PotionUtils.setPotion(potion2, ModPotions.AMBUSH_POTION.get());
+        brewingRecipes.add(factory.createBrewingRecipe(
+                List.copyOf(ingredientStack),
+                potion.copy(),
+                potion2.copy()
+        ));
+        inputStack.clear();
+        ingredientStack.clear();
+
+        //Spider Alchemy
+        inputStack.add(new ItemStack(ModItems.SPIDER_EGG.get()));
+        ingredientStack.add(new ItemStack(Items.MAGMA_CREAM));
+        brewingRecipes.add(factory.createBrewingRecipe(
+                List.copyOf(ingredientStack),
+                List.copyOf(inputStack),
+                new ItemStack(ModItems.JUMPING_FIRE_SPIDER_EGG.get())
+        ));
+        inputStack.clear();
+        ingredientStack.clear();
+
+        inputStack.add(new ItemStack(ModItems.JUMPING_FIRE_SPIDER_EGG.get()));
+        ingredientStack.add(new ItemStack(Items.REDSTONE));
+        brewingRecipes.add(factory.createBrewingRecipe(
+                List.copyOf(ingredientStack),
+                List.copyOf(inputStack),
+                new ItemStack(ModItems.CLOAKED_FIRE_SPIDER_EGG.get())
+        ));
+        inputStack.clear();
+        ingredientStack.clear();
+
+        inputStack.add(new ItemStack(ModItems.JUMPING_FIRE_SPIDER_EGG.get()));
+        ingredientStack.add(new ItemStack(Items.GLOWSTONE_DUST));
+        brewingRecipes.add(factory.createBrewingRecipe(
+                List.copyOf(ingredientStack),
+                List.copyOf(inputStack),
+                new ItemStack(ModItems.DAMAGED_FIRE_SPIDER_EGG.get())
+        ));
+        inputStack.clear();
+        ingredientStack.clear();
+
+        inputStack.add(new ItemStack(ModItems.SPIDER_EGG.get()));
+        ingredientStack.add(new ItemStack(Items.SNOWBALL));
+        brewingRecipes.add(factory.createBrewingRecipe(
+                List.copyOf(ingredientStack),
+                List.copyOf(inputStack),
+                new ItemStack(ModItems.JUMPING_ICE_SPIDER_EGG.get())
+        ));
+        inputStack.clear();
+        ingredientStack.clear();
+
+        inputStack.add(new ItemStack(ModItems.JUMPING_ICE_SPIDER_EGG.get()));
+        ingredientStack.add(new ItemStack(Items.REDSTONE));
+        brewingRecipes.add(factory.createBrewingRecipe(
+                List.copyOf(ingredientStack),
+                List.copyOf(inputStack),
+                new ItemStack(ModItems.CLOAKED_ICE_SPIDER_EGG.get())
+        ));
+        inputStack.clear();
+        ingredientStack.clear();
+
+        inputStack.add(new ItemStack(ModItems.JUMPING_ICE_SPIDER_EGG.get()));
+        ingredientStack.add(new ItemStack(Items.GLOWSTONE_DUST));
+        brewingRecipes.add(factory.createBrewingRecipe(
+                List.copyOf(ingredientStack),
+                List.copyOf(inputStack),
+                new ItemStack(ModItems.DAMAGED_ICE_SPIDER_EGG.get())
+        ));
+        inputStack.clear();
+        ingredientStack.clear();
+
+        inputStack.add(new ItemStack(ModItems.SPIDER_EGG.get()));
+        ingredientStack.add(new ItemStack(Items.COPPER_INGOT));
+        brewingRecipes.add(factory.createBrewingRecipe(
+                List.copyOf(ingredientStack),
+                List.copyOf(inputStack),
+                new ItemStack(ModItems.JUMPING_LIGHTNING_SPIDER_EGG.get())
+        ));
+        inputStack.clear();
+        ingredientStack.clear();
+
+        inputStack.add(new ItemStack(ModItems.JUMPING_LIGHTNING_SPIDER_EGG.get()));
+        ingredientStack.add(new ItemStack(Items.REDSTONE));
+        brewingRecipes.add(factory.createBrewingRecipe(
+                List.copyOf(ingredientStack),
+                List.copyOf(inputStack),
+                new ItemStack(ModItems.CLOAKED_LIGHTNING_SPIDER_EGG.get())
+        ));
+        inputStack.clear();
+        ingredientStack.clear();
+
+        inputStack.add(new ItemStack(ModItems.JUMPING_LIGHTNING_SPIDER_EGG.get()));
+        ingredientStack.add(new ItemStack(Items.GLOWSTONE_DUST));
+        brewingRecipes.add(factory.createBrewingRecipe(
+                List.copyOf(ingredientStack),
+                List.copyOf(inputStack),
+                new ItemStack(ModItems.DAMAGED_LIGHTNING_SPIDER_EGG.get())
+        ));
+        inputStack.clear();
+        ingredientStack.clear();
+
+        inputStack.add(new ItemStack(ModItems.SPIDER_EGG.get()));
+        ingredientStack.add(new ItemStack(Items.GUNPOWDER));
+        brewingRecipes.add(factory.createBrewingRecipe(
+                List.copyOf(ingredientStack),
+                List.copyOf(inputStack),
+                new ItemStack(ModItems.JUMPING_BLAST_SPIDER_EGG.get())
+        ));
+        inputStack.clear();
+        ingredientStack.clear();
+
+        inputStack.add(new ItemStack(ModItems.JUMPING_BLAST_SPIDER_EGG.get()));
+        ingredientStack.add(new ItemStack(Items.REDSTONE));
+        brewingRecipes.add(factory.createBrewingRecipe(
+                List.copyOf(ingredientStack),
+                List.copyOf(inputStack),
+                new ItemStack(ModItems.DAMAGED_BLAST_SPIDER_EGG.get())
+        ));
+        inputStack.clear();
+        ingredientStack.clear();
+
+        inputStack.add(new ItemStack(ModItems.SPIDER_EGG.get()));
+        ingredientStack.add(new ItemStack(Items.CHORUS_FRUIT));
+        brewingRecipes.add(factory.createBrewingRecipe(
+                List.copyOf(ingredientStack),
+                List.copyOf(inputStack),
+                new ItemStack(ModItems.JUMPING_PSYCHIC_SPIDER_EGG.get())
+        ));
+        inputStack.clear();
+        ingredientStack.clear();
+
+        inputStack.add(new ItemStack(ModItems.JUMPING_PSYCHIC_SPIDER_EGG.get()));
+        ingredientStack.add(new ItemStack(Items.REDSTONE));
+        brewingRecipes.add(factory.createBrewingRecipe(
+                List.copyOf(ingredientStack),
+                List.copyOf(inputStack),
+                new ItemStack(ModItems.DAMAGED_PSYCHIC_SPIDER_EGG.get())
+        ));
+        inputStack.clear();
+        ingredientStack.clear();
 
 
         registration.addRecipes(RecipeTypes.BREWING, brewingRecipes);

@@ -8,6 +8,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.trashelemental.infested.infested;
+import net.trashelemental.infested.magic.effects.ModMobEffects;
 
 public class ModPotions {
     public static final DeferredRegister<Potion> REGISTRY = DeferredRegister.create(ForgeRegistries.POTIONS, infested.MOD_ID);
@@ -19,6 +20,9 @@ public class ModPotions {
             new Potion(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 1800, 0, false, true)));
     public static final RegistryObject<Potion> RESISTANCE_POTION_STRONG = REGISTRY.register("resistance_potion_strong", () -> 
             new Potion(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 440, 1, false, true)));
+
+    public static final RegistryObject<Potion> AMBUSH_POTION = REGISTRY.register("ambush_potion", () ->
+            new Potion(new MobEffectInstance(ModMobEffects.AMBUSH.get(), 300, 0, false, true)));
 
 
     public static void register(IEventBus eventBus) {

@@ -28,28 +28,70 @@ public class ModItemTagGenerator extends ItemTagsProvider {
 
     private void addForgeTags() {
 
+        tag(ItemTags.create(new ResourceLocation("forge", "swords"))).add(ModItems.MANTIS_SICKLE.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "swords"))).add(ModItems.SPIDER_SICA.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "swords"))).add(ModItems.STINGER_PONIARD.get());
+
         //Armor sets
-        //Spider Set
-        tag(ItemTags.create(new ResourceLocation("forge", "items/armor/helmets"))).add(ModItems.SPIDER_HELMET.get());
-        tag(ItemTags.create(new ResourceLocation("forge", "items/armor/chestplates"))).add(ModItems.SPIDER_CHESTPLATE.get());
-        tag(ItemTags.create(new ResourceLocation("forge", "items/armor/chest_armor"))).add(ModItems.SPIDER_CHESTPLATE.get());
-        tag(ItemTags.create(new ResourceLocation("forge", "items/armor/leggings"))).add(ModItems.SPIDER_LEGGINGS.get());
-        tag(ItemTags.create(new ResourceLocation("forge", "items/armor/boots"))).add(ModItems.SPIDER_BOOTS.get());
-        //Chitin Set
-        tag(ItemTags.create(new ResourceLocation("forge", "items/armor/helmets"))).add(ModItems.CHITIN_HELMET.get());
-        tag(ItemTags.create(new ResourceLocation("forge", "items/armor/chestplates"))).add(ModItems.CHITIN_CHESTPLATE.get());
-        tag(ItemTags.create(new ResourceLocation("forge", "items/armor/chest_armor"))).add(ModItems.CHITIN_CHESTPLATE.get());
-        tag(ItemTags.create(new ResourceLocation("forge", "items/armor/leggings"))).add(ModItems.CHITIN_LEGGINGS.get());
-        tag(ItemTags.create(new ResourceLocation("forge", "items/armor/boots"))).add(ModItems.CHITIN_BOOTS.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "armors"))).add(ModItems.SPIDER_HELMET.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "armors"))).add(ModItems.SPIDER_CHESTPLATE.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "armors"))).add(ModItems.SPIDER_LEGGINGS.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "armors"))).add(ModItems.SPIDER_BOOTS.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "armors"))).add(ModItems.CHITIN_HELMET.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "armors"))).add(ModItems.CHITIN_CHESTPLATE.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "armors"))).add(ModItems.CHITIN_LEGGINGS.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "armors"))).add(ModItems.CHITIN_BOOTS.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "armors"))).add(ModItems.BEE_HELMET.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "armors"))).add(ModItems.BEE_CHESTPLATE.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "armors"))).add(ModItems.BEE_LEGGINGS.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "armors"))).add(ModItems.BEE_BOOTS.get());
+
+        tag(ItemTags.create(new ResourceLocation("forge", "armors/helmets"))).add(ModItems.SPIDER_HELMET.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "armors/chestplates"))).add(ModItems.SPIDER_CHESTPLATE.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "armors/chest_armors"))).add(ModItems.SPIDER_CHESTPLATE.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "armors/leggings"))).add(ModItems.SPIDER_LEGGINGS.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "armors/boots"))).add(ModItems.SPIDER_BOOTS.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "armors/helmets"))).add(ModItems.CHITIN_HELMET.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "armors/chestplates"))).add(ModItems.CHITIN_CHESTPLATE.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "armors/chest_armors"))).add(ModItems.CHITIN_CHESTPLATE.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "armors/leggings"))).add(ModItems.CHITIN_LEGGINGS.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "armors/boots"))).add(ModItems.CHITIN_BOOTS.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "armors/helmets"))).add(ModItems.BEE_HELMET.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "armors/chestplates"))).add(ModItems.BEE_CHESTPLATE.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "armors/chest_armors"))).add(ModItems.BEE_CHESTPLATE.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "armors/leggings"))).add(ModItems.BEE_LEGGINGS.get());
+        tag(ItemTags.create(new ResourceLocation("forge", "armors/boots"))).add(ModItems.BEE_BOOTS.get());
     }
 
     private void addNeoforgeTags() {
 
+        tag(ItemTags.create(new ResourceLocation("neoforge", "swords"))).add(ModItems.MANTIS_SICKLE.get());
+        tag(ItemTags.create(new ResourceLocation("neoforge", "tools/swords"))).add(ModItems.MANTIS_SICKLE.get());
+        tag(ItemTags.create(new ResourceLocation("neoforge", "swords"))).add(ModItems.SPIDER_SICA.get());
+        tag(ItemTags.create(new ResourceLocation("neoforge", "tools/swords"))).add(ModItems.SPIDER_SICA.get());
+        tag(ItemTags.create(new ResourceLocation("neoforge", "swords"))).add(ModItems.STINGER_PONIARD.get());
+        tag(ItemTags.create(new ResourceLocation("neoforge", "tools/swords"))).add(ModItems.STINGER_PONIARD.get());
+
         //Armor sets
-        tag(ItemTags.create(new ResourceLocation("neoforge", "items/armor/helmets"))).add(ModItems.SPIDER_HELMET.get(), ModItems.CHITIN_HELMET.get());
-        tag(ItemTags.create(new ResourceLocation("neoforge", "items/armor/chestplates"))).add(ModItems.SPIDER_CHESTPLATE.get(), ModItems.CHITIN_CHESTPLATE.get());
-        tag(ItemTags.create(new ResourceLocation("neoforge", "items/armor/chest_armor"))).add(ModItems.SPIDER_CHESTPLATE.get(), ModItems.CHITIN_CHESTPLATE.get());
-        tag(ItemTags.create(new ResourceLocation("neoforge", "items/armor/leggings"))).add(ModItems.SPIDER_LEGGINGS.get(), ModItems.CHITIN_LEGGINGS.get());
-        tag(ItemTags.create(new ResourceLocation("neoforge", "items/armor/boots"))).add(ModItems.SPIDER_BOOTS.get(), ModItems.CHITIN_BOOTS.get());
+        tag(ItemTags.create(new ResourceLocation("neoforge", "armors/helmets"))).add(
+                ModItems.SPIDER_HELMET.get(),
+                ModItems.CHITIN_HELMET.get(),
+                ModItems.BEE_HELMET.get());
+        tag(ItemTags.create(new ResourceLocation("neoforge", "armors/chestplates"))).add(
+                ModItems.SPIDER_CHESTPLATE.get(),
+                ModItems.CHITIN_CHESTPLATE.get(),
+                ModItems.BEE_CHESTPLATE.get());
+        tag(ItemTags.create(new ResourceLocation("neoforge", "armors/chest_armors"))).add(
+                ModItems.SPIDER_CHESTPLATE.get(),
+                ModItems.CHITIN_CHESTPLATE.get(),
+                ModItems.BEE_CHESTPLATE.get());
+        tag(ItemTags.create(new ResourceLocation("neoforge", "armors/leggings"))).add
+                (ModItems.SPIDER_LEGGINGS.get(),
+                ModItems.CHITIN_LEGGINGS.get(),
+                        ModItems.BEE_LEGGINGS.get());
+        tag(ItemTags.create(new ResourceLocation("neoforge", "armors/boots"))).add(
+                ModItems.SPIDER_BOOTS.get(),
+                ModItems.CHITIN_BOOTS.get(),
+                ModItems.BEE_BOOTS.get());
     }
 }

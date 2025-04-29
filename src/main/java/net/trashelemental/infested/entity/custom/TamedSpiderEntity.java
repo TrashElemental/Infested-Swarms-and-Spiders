@@ -1,6 +1,7 @@
 package net.trashelemental.infested.entity.custom;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -9,6 +10,9 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -38,6 +42,10 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.trashelemental.infested.Config;
+import net.trashelemental.infested.infested;
+import net.trashelemental.infested.item.ModItems;
+import net.trashelemental.infested.junkyard_lib.visual.particle.ParticleMethods;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -45,7 +53,14 @@ import java.util.Objects;
 
 public class TamedSpiderEntity extends TamableAnimal {
 
+    private static final EntityDataAccessor<Boolean> ARMORED = SynchedEntityData.defineId(TamedSpiderEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> ARMOR_DURABILITY = SynchedEntityData.defineId(TamedSpiderEntity.class, EntityDataSerializers.INT);
 
+    private static final EntityDataAccessor<Boolean> FIRE_SKIN = SynchedEntityData.defineId(TamedSpiderEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> ICE_SKIN = SynchedEntityData.defineId(TamedSpiderEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> LIGHTNING_SKIN = SynchedEntityData.defineId(TamedSpiderEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> PSYCHIC_SKIN = SynchedEntityData.defineId(TamedSpiderEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> BLAST_SKIN = SynchedEntityData.defineId(TamedSpiderEntity.class, EntityDataSerializers.BOOLEAN);
 
     public TamedSpiderEntity(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
@@ -103,7 +118,6 @@ public class TamedSpiderEntity extends TamableAnimal {
             return false;
         return entity.isWandering();
     }
-
 
     public static AttributeSupplier.Builder createAttributes() {
         return Animal.createLivingAttributes()
@@ -201,13 +215,13 @@ public class TamedSpiderEntity extends TamableAnimal {
 
     //Poison immunity
     @Override
-    public boolean canBeAffected(MobEffectInstance pPotioneffect) {
-        if (pPotioneffect.getEffect() == MobEffects.POISON) {
-            MobEffectEvent.Applicable event = new MobEffectEvent.Applicable(this, pPotioneffect);
+    public boolean canBeAffected(MobEffectInstance effect) {
+        if (effect.getEffect() == MobEffects.POISON) {
+            MobEffectEvent.Applicable event = new MobEffectEvent.Applicable(this, effect);
             MinecraftForge.EVENT_BUS.post(event);
             return event.getResult() == Event.Result.ALLOW;
         } else {
-            return super.canBeAffected(pPotioneffect);
+            return super.canBeAffected(effect);
         }
     }
 
@@ -221,22 +235,30 @@ public class TamedSpiderEntity extends TamableAnimal {
 
     // Right click events
     @Override
-    public InteractionResult mobInteract(Player pPlayer, InteractionHand pHand) {
-        ItemStack itemStack = pPlayer.getItemInHand(pHand);
+    public InteractionResult mobInteract(Player player, InteractionHand pHand) {
+        ItemStack stack = player.getItemInHand(pHand);
 
-        if (isPotionEffectItem(itemStack, pPlayer)) {
+        if (isPotionEffectItem(stack, player)) {
             return InteractionResult.SUCCESS;
         }
 
-        if (isDyeItem (itemStack, pPlayer)) {
+        if (isDyeItem (stack, player)) {
             return InteractionResult.SUCCESS;
         }
 
-        if (this.isOwnedBy(pPlayer)) {
-            cycleBehavior(pPlayer);
+        if (applyElementalSkin(stack, player)) {
+            return InteractionResult.SUCCESS;
         }
 
-        return super.mobInteract(pPlayer, pHand);
+        if (applySpiderArmor(stack, player)) {
+            return InteractionResult.SUCCESS;
+        }
+
+        if (this.isOwnedBy(player)) {
+            cycleBehavior(player);
+        }
+
+        return super.mobInteract(player, pHand);
     }
 
     //Behavior
@@ -347,6 +369,89 @@ public class TamedSpiderEntity extends TamableAnimal {
         return super.doHurtTarget(pEntity);
     }
 
+    private boolean applySpiderArmor(ItemStack itemStack, Player player) {
+        if (!this.isOwnedBy(player)) return false;
+
+        if (itemStack.getItem() == ModItems.TAMED_SPIDER_ARMOR.get()) {
+            if (!this.entityData.get(ARMORED)) {
+                this.entityData.set(ARMORED, true);
+                setArmorDurability(20);
+                this.playSound(SoundEvents.ARMOR_EQUIP_LEATHER, 0.5F, 1.0F);
+                if (!player.getAbilities().instabuild) {
+                    itemStack.shrink(1);
+                }
+            }
+            return true;
+        }
+
+        else if(itemStack.getItem() == Items.BONE && this.entityData.get(ARMORED) && getArmorDurability() < 20) {
+            setArmorDurability(Math.min(getArmorDurability() + 5, 20));
+            this.playSound(SoundEvents.ARMOR_EQUIP_LEATHER, 0.5F, 1.0F);
+            ParticleMethods.ParticlesAroundServerSide(this.level(), ParticleTypes.HAPPY_VILLAGER,
+                    this.getX(), this.getY(), this.getZ(), 5, 1);
+            if (!player.getAbilities().instabuild) {
+                itemStack.shrink(1);
+            }
+            return true;
+        }
+
+        else if (itemStack.getItem() == Items.SHEARS && this.entityData.get(ARMORED)) {
+
+            setArmorDurability(0);
+            this.entityData.set(ARMORED, false);
+            this.playSound(SoundEvents.SNOW_GOLEM_SHEAR, 0.5F, 1.0F);
+            if (!player.getAbilities().instabuild) {
+                itemStack.hurtAndBreak(1, player, (e) -> e.broadcastBreakEvent(player.getUsedItemHand()));
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public int getArmorDurability() {
+        return this.entityData.get(ARMOR_DURABILITY);
+    }
+
+    public void setArmorDurability(int durability) {
+        durability = Math.max(0, Math.min(durability, 20));
+        this.entityData.set(ARMOR_DURABILITY, durability);
+
+        if (durability == 0 && this.entityData.get(ARMORED)) {
+            this.entityData.set(ARMORED, false);
+        }
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        if (source.is(DamageTypes.FALL)) {
+            amount = Math.min(amount, 2.0F);
+        }
+        return super.hurt(source, amount);
+    }
+
+    @Override
+    protected void actuallyHurt(DamageSource source, float amount) {
+        if (this.isArmored() && !source.is(DamageTypeTags.BYPASSES_ARMOR)) {
+            int durability = getArmorDurability();
+            int damage = Mth.ceil(amount);
+
+            if (durability > 0) {
+                if (damage >= durability) {
+                    setArmorDurability(0);
+                    this.entityData.set(ARMORED, false);
+                    this.playSound(SoundEvents.ITEM_BREAK, 1.0F, 1.0F);
+                    super.actuallyHurt(source, damage - durability);
+                } else {
+                    setArmorDurability(durability - damage);
+                }
+                return;
+            }
+        }
+        super.actuallyHurt(source, amount);
+    }
+
     //Eye Colors
     private static final EntityDataAccessor<Integer> EYE_COLOR_DATA = SynchedEntityData.defineId(TamedSpiderEntity.class, EntityDataSerializers.INT);
 
@@ -372,6 +477,54 @@ public class TamedSpiderEntity extends TamableAnimal {
         return false;
     }
 
+    private boolean applyElementalSkin(ItemStack itemStack, Player player) {
+        if (!this.isOwnedBy(player)) return false;
+
+        boolean applied = false;
+
+        if (isFireSkinItem(itemStack)) {
+            clearAllElementalSkins();
+            this.entityData.set(FIRE_SKIN, true);
+            applied = true;
+        } else if (isIceSkinItem(itemStack)) {
+            clearAllElementalSkins();
+            this.entityData.set(ICE_SKIN, true);
+            applied = true;
+        } else if (isLightningSkinItem(itemStack)) {
+            clearAllElementalSkins();
+            this.entityData.set(LIGHTNING_SKIN, true);
+            applied = true;
+        } else if (isPsychicSkinItem(itemStack)) {
+            clearAllElementalSkins();
+            this.entityData.set(PSYCHIC_SKIN, true);
+            applied = true;
+        } else if (isBlastSkinItem(itemStack)) {
+            clearAllElementalSkins();
+            this.entityData.set(BLAST_SKIN, true);
+            applied = true;
+        }
+
+        if (applied && !player.getAbilities().instabuild) {
+            itemStack.shrink(1);
+        }
+
+        return applied;
+    }
+
+
+    //Custom Health Config
+    public void applyCustomHealth() {
+        this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(Config.DEFAULT_TAMED_SPIDER_HEALTH.get());
+        this.setHealth(this.getMaxHealth());
+    }
+
+    @Override
+    public void onAddedToWorld() {
+        super.onAddedToWorld();
+        if (this.isTame()) {
+            applyCustomHealth();
+        }
+    }
 
     //NBT Tags
     @Override
@@ -380,7 +533,13 @@ public class TamedSpiderEntity extends TamableAnimal {
         compound.putString("PotionEffect", this.POTION_EFFECT);
         compound.putString("Behavior", this.BEHAVIOR);
         compound.putByte("EyeColor", (byte) this.getEyeColor().getId());
-
+        compound.putBoolean("isArmored", this.entityData.get(ARMORED));
+        compound.putInt("ArmorDurability", getArmorDurability());
+        compound.putBoolean("isIceSkin", this.entityData.get(ICE_SKIN));
+        compound.putBoolean("isFireSkin", this.entityData.get(FIRE_SKIN));
+        compound.putBoolean("isLightningSkin", this.entityData.get(LIGHTNING_SKIN));
+        compound.putBoolean("isPsychicSkin", this.entityData.get(PSYCHIC_SKIN));
+        compound.putBoolean("isBlastSkin", this.entityData.get(BLAST_SKIN));
     }
 
     @Override
@@ -395,8 +554,13 @@ public class TamedSpiderEntity extends TamableAnimal {
         if (compound.contains("EyeColor", 99)) {
             this.setEyeColor(DyeColor.byId(compound.getByte("EyeColor")));
         }
-
-
+        this.entityData.set(ARMORED, compound.getBoolean("isArmored"));
+        setArmorDurability(compound.getInt("ArmorDurability"));
+        this.entityData.set(ICE_SKIN, compound.getBoolean("isIceSkin"));
+        this.entityData.set(FIRE_SKIN, compound.getBoolean("isFireSkin"));
+        this.entityData.set(LIGHTNING_SKIN, compound.getBoolean("isLightningSkin"));
+        this.entityData.set(PSYCHIC_SKIN, compound.getBoolean("isPsychicSkin"));
+        this.entityData.set(BLAST_SKIN, compound.getBoolean("isBlastSkin"));
     }
 
     @Override
@@ -404,17 +568,111 @@ public class TamedSpiderEntity extends TamableAnimal {
         super.defineSynchedData();
         this.entityData.define(DATA_FLAGS_ID, (byte) 0);
         this.entityData.define(EYE_COLOR_DATA, DyeColor.GREEN.getId());
+        this.entityData.define(ARMORED, false);
+        this.entityData.define(ARMOR_DURABILITY, 0);
+        this.entityData.define(ICE_SKIN, false);
+        this.entityData.define(FIRE_SKIN, false);
+        this.entityData.define(LIGHTNING_SKIN, false);
+        this.entityData.define(PSYCHIC_SKIN, false);
+        this.entityData.define(BLAST_SKIN, false);
     }
 
-    //Takes no more than one heart worth of fall damage.
-    @Override
-    public boolean hurt(DamageSource pSource, float pAmount) {
+    //Textures
+    public ResourceLocation getTexture() {
 
-        if (pSource.is(DamageTypes.FALL)) {
-            pAmount = Math.min(pAmount, 2.0F);
+        if (this.shouldUseVanillaSkin()) {
+            return new ResourceLocation(infested.MOD_ID, "textures/entity/spider_vanilla.png");
         }
 
-        return super.hurt(pSource, pAmount);
+        if (this.shouldUseKumongaSkin()) {
+            return new ResourceLocation(infested.MOD_ID, "textures/entity/kumonga.png");
+        }
+
+        if (this.isIceSkin()) {
+            return new ResourceLocation(infested.MOD_ID, "textures/entity/spider_ice.png");
+        }
+
+        if (this.isFireSkin()) {
+            return new ResourceLocation(infested.MOD_ID, "textures/entity/spider_fire.png");
+        }
+
+        if (this.isLightningSkin()) {
+            return new ResourceLocation(infested.MOD_ID, "textures/entity/spider_lightning.png");
+        }
+
+        if (this.isPsychicSkin()) {
+            return new ResourceLocation(infested.MOD_ID, "textures/entity/spider_psychic.png");
+        }
+
+        if (this.isBlastSkin()) {
+            return new ResourceLocation(infested.MOD_ID, "textures/entity/spider_blast.png");
+        }
+
+        return new ResourceLocation(infested.MOD_ID, "textures/entity/cave_spider.png");
     }
 
+    public boolean isArmored() {
+        return this.entityData.get(ARMORED);
+    }
+    public boolean isIceSkin() {
+        return this.entityData.get(ICE_SKIN);
+    }
+    public boolean isFireSkin() {
+        return this.entityData.get(FIRE_SKIN);
+    }
+    public boolean isLightningSkin() {
+        return this.entityData.get(LIGHTNING_SKIN);
+    }
+    public boolean isPsychicSkin() {
+        return this.entityData.get(PSYCHIC_SKIN);
+    }
+    public boolean isBlastSkin() {
+        return this.entityData.get(BLAST_SKIN);
+    }
+
+    public String getEntityName() {
+        if (this.hasCustomName()) {
+            return this.getCustomName().getString();
+        }
+        return this.getType().getDescription().getString();
+    }
+
+    public boolean shouldUseKumongaSkin() {
+        return this.getEntityName().equals("Kumonga");
+    }
+    public boolean shouldUseVanillaSkin() {
+        return this.getEntityName().equals("Marshall");
+    }
+
+    private boolean isFireSkinItem(ItemStack item) {
+        return item.is(ModItems.JUMPING_FIRE_SPIDER_EGG.get()) ||
+        item.is(ModItems.DAMAGED_FIRE_SPIDER_EGG.get()) ||
+        item.is(ModItems.CLOAKED_FIRE_SPIDER_EGG.get());
+    }
+    private boolean isIceSkinItem(ItemStack item) {
+        return item.is(ModItems.JUMPING_ICE_SPIDER_EGG.get()) ||
+                item.is(ModItems.DAMAGED_ICE_SPIDER_EGG.get()) ||
+                item.is(ModItems.CLOAKED_ICE_SPIDER_EGG.get());
+    }
+    private boolean isLightningSkinItem(ItemStack item) {
+        return item.is(ModItems.JUMPING_LIGHTNING_SPIDER_EGG.get()) ||
+                item.is(ModItems.DAMAGED_LIGHTNING_SPIDER_EGG.get()) ||
+                item.is(ModItems.CLOAKED_LIGHTNING_SPIDER_EGG.get());
+    }
+    private boolean isBlastSkinItem(ItemStack item) {
+        return item.is(ModItems.JUMPING_BLAST_SPIDER_EGG.get()) ||
+                item.is(ModItems.DAMAGED_BLAST_SPIDER_EGG.get());
+    }
+    private boolean isPsychicSkinItem(ItemStack item) {
+        return item.is(ModItems.JUMPING_PSYCHIC_SPIDER_EGG.get()) ||
+                item.is(ModItems.DAMAGED_PSYCHIC_SPIDER_EGG.get());
+    }
+
+    private void clearAllElementalSkins() {
+        this.entityData.set(ICE_SKIN, false);
+        this.entityData.set(FIRE_SKIN, false);
+        this.entityData.set(LIGHTNING_SKIN, false);
+        this.entityData.set(PSYCHIC_SKIN, false);
+        this.entityData.set(BLAST_SKIN, false);
+    }
 }

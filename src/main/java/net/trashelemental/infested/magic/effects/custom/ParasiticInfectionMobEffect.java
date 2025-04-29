@@ -15,9 +15,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 import net.trashelemental.infested.entity.ModEntities;
 import net.trashelemental.infested.infested;
+import net.trashelemental.infested.junkyard_lib.visual.particle.ParticleMethods;
 
 public class ParasiticInfectionMobEffect extends MobEffect {
     public ParasiticInfectionMobEffect() { super(MobEffectCategory.HARMFUL, -13434109); }
@@ -37,25 +38,16 @@ public class ParasiticInfectionMobEffect extends MobEffect {
 
     @Override
     public void removeAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, int amplifier) {
-        super.removeAttributeModifiers(entity, attributeMap, amplifier);
-        execute(entity.level(), entity);
-    }
+        Level level = entity.level();
 
-    private static void execute(LevelAccessor world, Entity entity) {
-        if (entity == null || world == null) return;
-
-
-        entity.hurt(new DamageSource(world.registryAccess().registryOrThrow(
+        entity.hurt(new DamageSource(level.registryAccess().registryOrThrow(
                 Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.GENERIC)), 30);
 
         infested.queueServerWork(20, () -> {
-            if (world instanceof ServerLevel _level) {
+            if (level instanceof ServerLevel _level) {
 
-                _level.sendParticles(ParticleTypes.POOF,
-                        entity.getX(), entity.getY(), entity.getZ(),
-                        10,
-                        0.5, 0.5, 0.5,
-                        0.1);
+                ParticleMethods.ParticlesAroundServerSide(_level, ParticleTypes.POOF,
+                        entity.getX(), entity.getY(), entity.getZ(), 5, 1);
 
                 _level.playSound(null, BlockPos.containing(entity.getX(), entity.getY(), entity.getZ()),
                         SoundEvents.SNIFFER_EGG_HATCH,
@@ -64,11 +56,12 @@ public class ParasiticInfectionMobEffect extends MobEffect {
                 EntityType<?> crimsonBeetle = ModEntities.CRIMSON_BEETLE.get();
                 Entity beetleEntity = crimsonBeetle.create(_level);
                 if (beetleEntity != null) {
-                    beetleEntity.moveTo(entity.getX(), entity.getY(), entity.getZ(), world.getRandom().nextFloat() * 360F, 0);
+                    beetleEntity.moveTo(entity.getX(), entity.getY(), entity.getZ(), level.getRandom().nextFloat() * 360F, 0);
                     _level.addFreshEntity(beetleEntity);
                 }
             }
         });
+        super.removeAttributeModifiers(entity, attributeMap, amplifier);
     }
 
     public ResourceLocation getIcon() {

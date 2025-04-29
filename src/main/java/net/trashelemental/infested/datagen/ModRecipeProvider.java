@@ -5,6 +5,7 @@ import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 import net.trashelemental.infested.block.ModBlocks;
 import net.trashelemental.infested.item.ModItems;
@@ -35,6 +36,23 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(ModBlocks.CHITIN_BRICKS.get()), has(ModBlocks.CHITIN_BRICKS.get()))
                 .save(pWriter, new ResourceLocation("infested", "chitin_from_chitin_bricks"));
 
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModBlocks.COBWEB_TRAP.get(), 4)
+                .requires(Blocks.COBWEB)
+                .unlockedBy(getHasName(ModItems.SPIDER_EGG.get()), has(ModItems.SPIDER_EGG.get()))
+                .save(pWriter, new ResourceLocation("infested", "cobweb_trap_from_cobweb"));
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.COBWEB_BOMB.get(), 1)
+                .requires(ModBlocks.COBWEB_TRAP.get())
+                .requires(Items.STRING)
+                .unlockedBy(getHasName(ModBlocks.COBWEB_TRAP.get()), has(ModBlocks.COBWEB_TRAP.get()))
+                .save(pWriter, new ResourceLocation("infested", "cobweb_bomb"));
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SPIDER_EGG_SAC.get(), 1)
+                .requires(ModItems.SPIDER_EGG.get())
+                .requires(Items.STRING)
+                .unlockedBy(getHasName(ModItems.SPIDER_EGG.get()), has(ModItems.SPIDER_EGG.get()))
+                .save(pWriter, new ResourceLocation("infested", "spider_egg_sac"));
+
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.INSECT_TEMPLATE.get())
                 .pattern("aba")
                 .pattern("aca")
@@ -52,6 +70,26 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('a', Items.STRING)
                 .define('b', ModItems.SPIDER_EGG.get())
                 .define('c', Items.STONE)
+                .unlockedBy(getHasName(ModItems.SPIDER_EGG.get()), has(ModItems.SPIDER_EGG.get()))
+                .save(pWriter);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BEE_TEMPLATE.get())
+                .pattern("aba")
+                .pattern("aca")
+                .pattern("aaa")
+                .define('a', Items.HONEYCOMB)
+                .define('b', ModItems.BEE_EGGS.get())
+                .define('c', Items.STONE)
+                .unlockedBy(getHasName(ModItems.BEE_EGGS.get()), has(ModItems.BEE_EGGS.get()))
+                .save(pWriter);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.TAMED_SPIDER_ARMOR.get())
+                .pattern("aba")
+                .pattern("a a")
+                .pattern(" c ")
+                .define('a', Items.BONE)
+                .define('b', Items.COBWEB)
+                .define('c', Items.STRING)
                 .unlockedBy(getHasName(ModItems.SPIDER_EGG.get()), has(ModItems.SPIDER_EGG.get()))
                 .save(pWriter);
 
@@ -149,7 +187,38 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .save(pWriter, new ResourceLocation("infested", "fried_grub_smoking"));
 
 
-        //Armor Items
+        //Equipment Items
+
+        SmithingTransformRecipeBuilder.smithing(
+                        Ingredient.of(ModItems.INSECT_TEMPLATE.get()),
+                        Ingredient.of(Items.WOODEN_SWORD),
+                        Ingredient.of(ModItems.MANTIS_CLAW.get()),
+                        RecipeCategory.MISC,
+                        ModItems.MANTIS_SICKLE.get()
+                )
+                .unlocks("has_insect_template", has(ModItems.INSECT_TEMPLATE.get()))
+                .save(pWriter, new ResourceLocation("infested", "mantis_sickle_smithing"));
+
+        SmithingTransformRecipeBuilder.smithing(
+                        Ingredient.of(ModItems.SPIDER_TEMPLATE.get()),
+                        Ingredient.of(Items.WOODEN_SWORD),
+                        Ingredient.of(Items.SPIDER_EYE),
+                        RecipeCategory.MISC,
+                        ModItems.SPIDER_SICA.get()
+                )
+                .unlocks("has_spider_template", has(ModItems.SPIDER_TEMPLATE.get()))
+                .save(pWriter, new ResourceLocation("infested", "spider_sica_smithing"));
+
+        SmithingTransformRecipeBuilder.smithing(
+                        Ingredient.of(ModItems.BEE_TEMPLATE.get()),
+                        Ingredient.of(Items.WOODEN_SWORD),
+                        Ingredient.of(ModItems.BEE_EGGS.get()),
+                        RecipeCategory.MISC,
+                        ModItems.STINGER_PONIARD.get()
+                )
+                .unlocks("has_bee_template", has(ModItems.BEE_TEMPLATE.get()))
+                .save(pWriter, new ResourceLocation("infested", "stinger_poniard_smithing"));
+
         SmithingTransformRecipeBuilder.smithing(
                         Ingredient.of(ModItems.INSECT_TEMPLATE.get()),
                         Ingredient.of(Items.LEATHER_HELMET),
@@ -229,6 +298,47 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 )
                 .unlocks("has_spider_template", has(ModItems.SPIDER_TEMPLATE.get()))
                 .save(pWriter, new ResourceLocation("infested", "spider_boots_smithing"));
+
+        SmithingTransformRecipeBuilder.smithing(
+                        Ingredient.of(ModItems.BEE_TEMPLATE.get()),
+                        Ingredient.of(Items.LEATHER_HELMET),
+                        Ingredient.of(Items.HONEYCOMB),
+                        RecipeCategory.MISC,
+                        ModItems.BEE_HELMET.get()
+                )
+                .unlocks("has_bee_template", has(ModItems.BEE_TEMPLATE.get()))
+                .save(pWriter, new ResourceLocation("infested", "bee_helmet_smithing"));
+
+        SmithingTransformRecipeBuilder.smithing(
+                        Ingredient.of(ModItems.BEE_TEMPLATE.get()),
+                        Ingredient.of(Items.LEATHER_CHESTPLATE),
+                        Ingredient.of(Items.HONEYCOMB),
+                        RecipeCategory.MISC,
+                        ModItems.BEE_CHESTPLATE.get()
+                )
+                .unlocks("has_bee_template", has(ModItems.BEE_TEMPLATE.get()))
+                .save(pWriter, new ResourceLocation("infested", "bee_chestplate_smithing"));
+
+        SmithingTransformRecipeBuilder.smithing(
+                        Ingredient.of(ModItems.BEE_TEMPLATE.get()),
+                        Ingredient.of(Items.LEATHER_LEGGINGS),
+                        Ingredient.of(Items.HONEYCOMB),
+                        RecipeCategory.MISC,
+                        ModItems.BEE_LEGGINGS.get()
+                )
+                .unlocks("has_bee_template", has(ModItems.BEE_TEMPLATE.get()))
+                .save(pWriter, new ResourceLocation("infested", "bee_leggings_smithing"));
+
+        SmithingTransformRecipeBuilder.smithing(
+                        Ingredient.of(ModItems.BEE_TEMPLATE.get()),
+                        Ingredient.of(Items.LEATHER_BOOTS),
+                        Ingredient.of(Items.HONEYCOMB),
+                        RecipeCategory.MISC,
+                        ModItems.BEE_BOOTS.get()
+                )
+                .unlocks("has_bee_template", has(ModItems.BEE_TEMPLATE.get()))
+                .save(pWriter, new ResourceLocation("infested", "bee_boots_smithing"));
+
 
 
 

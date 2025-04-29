@@ -32,6 +32,14 @@ public class JEIInfestedPlugin implements IModPlugin {
                 new ItemStack(ModItems.RAW_GRUB.get())), VanillaTypes.ITEM_STACK, Component.translatable("jei.infested.raw_grub_info"));
         registration.addIngredientInfo(List.of(
                 new ItemStack(ModItems.BEE_EGGS.get())), VanillaTypes.ITEM_STACK, Component.translatable("jei.infested.bee_eggs_info"));
+        registration.addIngredientInfo(List.of(
+                new ItemStack(ModItems.BUG_STEW.get())), VanillaTypes.ITEM_STACK, Component.translatable("jei.infested.bug_stew_info"));
+
+        registration.addIngredientInfo(List.of(
+                new ItemStack(ModItems.COBWEB_BOMB.get())), VanillaTypes.ITEM_STACK, Component.translatable("jei.infested.cobweb_bomb_info"));
+        registration.addIngredientInfo(List.of(
+                new ItemStack(ModItems.SPIDER_EGG_SAC.get())), VanillaTypes.ITEM_STACK, Component.translatable("jei.infested.spider_egg_sac_info"));
+
 
         registration.addIngredientInfo(List.of(
                 new ItemStack(ModItems.SWARM_CELL.get()),
@@ -51,7 +59,15 @@ public class JEIInfestedPlugin implements IModPlugin {
                 new ItemStack(ModBlocks.SPIDER_TRAP.get())), VanillaTypes.ITEM_STACK, Component.translatable("jei.infested.spider_trap_info"));
 
 
-        //Armors
+        //Equipment
+        registration.addIngredientInfo(List.of(
+                new ItemStack(ModItems.MANTIS_SICKLE.get())), VanillaTypes.ITEM_STACK, Component.translatable("jei.infested.mantis_sickle_info"));
+        registration.addIngredientInfo(List.of(
+                new ItemStack(ModItems.SPIDER_SICA.get())), VanillaTypes.ITEM_STACK, Component.translatable("jei.infested.spider_sica_info"));
+        registration.addIngredientInfo(List.of(
+                new ItemStack(ModItems.STINGER_PONIARD.get())), VanillaTypes.ITEM_STACK, Component.translatable("jei.infested.stinger_poniard_info"));
+
+
         registration.addIngredientInfo(List.of(
                 new ItemStack(ModItems.SPIDER_HELMET.get()),
                 new ItemStack(ModItems.SPIDER_CHESTPLATE.get()),
@@ -66,7 +82,50 @@ public class JEIInfestedPlugin implements IModPlugin {
                 new ItemStack(ModItems.CHITIN_BOOTS.get())),
                 VanillaTypes.ITEM_STACK, Component.translatable("jei.infested.chitin_armor_info"));
 
+        registration.addIngredientInfo(List.of(
+                        new ItemStack(ModItems.BEE_HELMET.get()),
+                        new ItemStack(ModItems.BEE_CHESTPLATE.get()),
+                        new ItemStack(ModItems.BEE_LEGGINGS.get()),
+                        new ItemStack(ModItems.BEE_BOOTS.get())),
+                VanillaTypes.ITEM_STACK, Component.translatable("jei.infested.bee_armor_info"));
 
+        registration.addIngredientInfo(List.of(
+                new ItemStack(ModItems.JUMPING_FIRE_SPIDER_EGG.get()),
+                new ItemStack(ModItems.DAMAGED_FIRE_SPIDER_EGG.get()),
+                new ItemStack(ModItems.CLOAKED_FIRE_SPIDER_EGG.get()),
+                new ItemStack(ModItems.JUMPING_LIGHTNING_SPIDER_EGG.get()),
+                new ItemStack(ModItems.DAMAGED_LIGHTNING_SPIDER_EGG.get()),
+                new ItemStack(ModItems.CLOAKED_LIGHTNING_SPIDER_EGG.get()),
+                new ItemStack(ModItems.JUMPING_ICE_SPIDER_EGG.get()),
+                new ItemStack(ModItems.DAMAGED_ICE_SPIDER_EGG.get()),
+                new ItemStack(ModItems.CLOAKED_ICE_SPIDER_EGG.get()),
+                new ItemStack(ModItems.JUMPING_BLAST_SPIDER_EGG.get()),
+                new ItemStack(ModItems.DAMAGED_BLAST_SPIDER_EGG.get()),
+                new ItemStack(ModItems.JUMPING_PSYCHIC_SPIDER_EGG.get()),
+                new ItemStack(ModItems.DAMAGED_PSYCHIC_SPIDER_EGG.get())),
+                VanillaTypes.ITEM_STACK, Component.translatable("jei.infested.spider_alchemy_info"));
+
+        registration.addIngredientInfo(List.of(
+                        new ItemStack(ModItems.JUMPING_FIRE_SPIDER_EGG.get()),
+                        new ItemStack(ModItems.JUMPING_LIGHTNING_SPIDER_EGG.get()),
+                        new ItemStack(ModItems.JUMPING_ICE_SPIDER_EGG.get()),
+                        new ItemStack(ModItems.JUMPING_BLAST_SPIDER_EGG.get()),
+                        new ItemStack(ModItems.JUMPING_PSYCHIC_SPIDER_EGG.get())),
+                VanillaTypes.ITEM_STACK, Component.translatable("jei.infested.jumping_spider_info"));
+
+        registration.addIngredientInfo(List.of(
+                        new ItemStack(ModItems.DAMAGED_FIRE_SPIDER_EGG.get()),
+                        new ItemStack(ModItems.DAMAGED_LIGHTNING_SPIDER_EGG.get()),
+                        new ItemStack(ModItems.DAMAGED_ICE_SPIDER_EGG.get()),
+                        new ItemStack(ModItems.DAMAGED_BLAST_SPIDER_EGG.get()),
+                        new ItemStack(ModItems.DAMAGED_PSYCHIC_SPIDER_EGG.get())),
+                VanillaTypes.ITEM_STACK, Component.translatable("jei.infested.damaged_spider_info"));
+
+        registration.addIngredientInfo(List.of(
+                        new ItemStack(ModItems.CLOAKED_FIRE_SPIDER_EGG.get()),
+                        new ItemStack(ModItems.CLOAKED_LIGHTNING_SPIDER_EGG.get()),
+                        new ItemStack(ModItems.CLOAKED_ICE_SPIDER_EGG.get())),
+                VanillaTypes.ITEM_STACK, Component.translatable("jei.infested.cloaked_spider_info"));
 
     }
 

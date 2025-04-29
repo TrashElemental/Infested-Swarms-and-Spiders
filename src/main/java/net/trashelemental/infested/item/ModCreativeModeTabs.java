@@ -20,6 +20,7 @@ public class ModCreativeModeTabs {
                     .title(Component.translatable("creativetab.infested_tab"))
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(ModItems.CHITIN.get());
+                        output.accept(ModItems.MANTIS_CLAW.get());
                         output.accept(ModItems.RAW_GRUB.get());
                         output.accept(ModItems.FRIED_GRUB.get());
                         output.accept(ModItems.BUG_STEW.get());
@@ -27,21 +28,40 @@ public class ModCreativeModeTabs {
                         output.accept(ModItems.SPIDER_EGG.get());
                         output.accept(ModItems.BEE_EGGS.get());
 
+                        output.accept(ModItems.SPIDER_EGG_SAC.get());
+                        output.accept(ModItems.COBWEB_BOMB.get());
+                        output.accept(ModItems.TAMED_SPIDER_ARMOR.get());
+
                         output.accept(ModItems.SWARM_CELL.get());
                         output.accept(ModItems.SWARM_SAC.get());
                         output.accept(ModItems.SWARM_STONE.get());
 
                         output.accept(ModItems.INSECT_TEMPLATE.get());
+
+                        output.accept(ModItems.MANTIS_SICKLE.get());
+
                         output.accept(ModItems.CHITIN_HELMET.get());
                         output.accept(ModItems.CHITIN_CHESTPLATE.get());
                         output.accept(ModItems.CHITIN_LEGGINGS.get());
                         output.accept(ModItems.CHITIN_BOOTS.get());
 
                         output.accept(ModItems.SPIDER_TEMPLATE.get());
+
+                        output.accept(ModItems.SPIDER_SICA.get());
+
                         output.accept(ModItems.SPIDER_HELMET.get());
                         output.accept(ModItems.SPIDER_CHESTPLATE.get());
                         output.accept(ModItems.SPIDER_LEGGINGS.get());
                         output.accept(ModItems.SPIDER_BOOTS.get());
+
+                        output.accept(ModItems.BEE_TEMPLATE.get());
+
+                        output.accept(ModItems.STINGER_PONIARD.get());
+
+                        output.accept(ModItems.BEE_HELMET.get());
+                        output.accept(ModItems.BEE_CHESTPLATE.get());
+                        output.accept(ModItems.BEE_LEGGINGS.get());
+                        output.accept(ModItems.BEE_BOOTS.get());
 
                         output.accept(ModBlocks.SILVERFISH_TRAP.get());
                         output.accept(ModBlocks.SPIDER_TRAP.get());
@@ -58,17 +78,29 @@ public class ModCreativeModeTabs {
                         output.accept(ModBlocks.CHITIN_BRICK_WALL.get());
                         output.accept(ModBlocks.CHISELED_CHITIN_BRICKS.get());
 
+                        output.accept(ModItems.JUMPING_FIRE_SPIDER_EGG.get());
+                        output.accept(ModItems.DAMAGED_FIRE_SPIDER_EGG.get());
+                        output.accept(ModItems.CLOAKED_FIRE_SPIDER_EGG.get());
+                        output.accept(ModItems.JUMPING_ICE_SPIDER_EGG.get());
+                        output.accept(ModItems.DAMAGED_ICE_SPIDER_EGG.get());
+                        output.accept(ModItems.CLOAKED_ICE_SPIDER_EGG.get());
+                        output.accept(ModItems.JUMPING_LIGHTNING_SPIDER_EGG.get());
+                        output.accept(ModItems.DAMAGED_LIGHTNING_SPIDER_EGG.get());
+                        output.accept(ModItems.CLOAKED_LIGHTNING_SPIDER_EGG.get());
+                        output.accept(ModItems.JUMPING_PSYCHIC_SPIDER_EGG.get());
+                        output.accept(ModItems.DAMAGED_PSYCHIC_SPIDER_EGG.get());
+                        output.accept(ModItems.JUMPING_BLAST_SPIDER_EGG.get());
+                        output.accept(ModItems.DAMAGED_BLAST_SPIDER_EGG.get());
+
                         output.accept(ModItems.GRUB_SPAWN_EGG.get());
                         output.accept(ModItems.CRIMSON_BEETLE_SPAWN_EGG.get());
                         output.accept(ModItems.BRILLIANT_BEETLE_SPAWN_EGG.get());
                         output.accept(ModItems.MANTIS_SPAWN_EGG.get());
-                        output.accept(ModItems.ORCHID_MANTIS_SPAWN_EGG.get());
 
                         output.accept(ModItems.HARVEST_BEETLE_SPAWN_EGG.get());
                         output.accept(ModItems.JEWEL_BEETLE_SPAWN_EGG.get());
                         output.accept(ModItems.CHORUS_BEETLE_SPAWN_EGG.get());
                         output.accept(ModItems.ANCIENT_DEBREETLE_SPAWN_EGG.get());
-
                     })
                     .build());
 

@@ -1,6 +1,8 @@
 package net.trashelemental.infested.item.custom;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -16,7 +18,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
+import net.trashelemental.infested.item.ModItems;
 import net.trashelemental.infested.magic.enchantments.custom.ConjuredSwarmEnchantment;
+import net.trashelemental.infested.junkyard_lib.entity.MinionEntity;
+import net.trashelemental.infested.junkyard_lib.entity.method.SummonMethods;
+import net.trashelemental.infested.junkyard_lib.visual.particle.ParticleMethods;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -43,9 +49,21 @@ public class SwarmCellItem extends Item {
         this.repairItem = repairItem;
     }
 
-    public int getMaxMinions() {
+    public int getBaseMinions() {
         return maxMinions;
     }
+
+    public int getMaxMinions(Player player) {
+        int bonusMinions = 0;
+
+        if (player.getItemBySlot(EquipmentSlot.HEAD).getItem() == ModItems.BEE_HELMET.get()) bonusMinions++;
+        if (player.getItemBySlot(EquipmentSlot.CHEST).getItem() == ModItems.BEE_CHESTPLATE.get()) bonusMinions++;
+        if (player.getItemBySlot(EquipmentSlot.LEGS).getItem() == ModItems.BEE_LEGGINGS.get()) bonusMinions++;
+        if (player.getItemBySlot(EquipmentSlot.FEET).getItem() == ModItems.BEE_BOOTS.get()) bonusMinions++;
+
+        return maxMinions + bonusMinions;
+    }
+
 
     public EntityType<?> getEntityType() {
         return entityTypeSupplier.get();
@@ -113,6 +131,8 @@ public class SwarmCellItem extends Item {
                         if (nearbyMinionTag != null && nearbyMinionTag.contains("Origin")
                                 && "SwarmCell".equals(nearbyMinionTag.getString("Origin"))
                                 && Objects.equals(nearbyMinion.getOwnerUUID(), player.getUUID())) {
+                            ParticleMethods.ParticlesAroundServerSide(level, ParticleTypes.POOF,
+                                    nearbyMinion.getX(), nearbyMinion.getY(), nearbyMinion.getZ(), 3, 0.1);
                             nearbyMinion.discard();
                         }
                     }
@@ -163,7 +183,7 @@ public class SwarmCellItem extends Item {
         if (!level.isClientSide) {
 
             int currentMinionCount = getCurrentMinionCount(level, player);
-            int minionsToSummon = maxMinions - currentMinionCount;
+            int minionsToSummon = getMaxMinions(player) - currentMinionCount;
 
             //Summon as many minions as is needed to reach the cap of the swarm cell item you're using
             if (minionsToSummon > 0) {
@@ -200,7 +220,7 @@ public class SwarmCellItem extends Item {
 
                 if (!level.isClientSide) {
                     int currentMinionCount = getCurrentMinionCount(level, player);
-                    if (currentMinionCount < maxMinions) {
+                    if (currentMinionCount < getMaxMinions(player)) {
                         spawnMinion(level, player, stack);
                         level.playSound(null, player.getX(), player.getY(), player.getZ(),
                                 SoundEvents.BEEHIVE_EXIT, SoundSource.PLAYERS, 0.5F, 1.0F);
@@ -214,26 +234,29 @@ public class SwarmCellItem extends Item {
 
     //Helper Methods
     private void spawnMinion(Level level, Player player, ItemStack item) {
-        ServerLevel serverLevel = (ServerLevel) level;
+        if (!(level instanceof ServerLevel serverLevel)) return;
 
-        Entity entity = getEntityType().spawn(serverLevel, item, player,
-                player.blockPosition(), MobSpawnType.MOB_SUMMONED, true, false);
+        BlockPos spawnPos = player.blockPosition().below();
+        Entity entity = getEntityType().create(serverLevel);
 
-        if (entity instanceof TamableAnimal tamableMinion) {
-            tamableMinion.setTame(true);
-            tamableMinion.moveTo(player.getX(), player.getY(), player.getZ(), 0, 0);
-            tamableMinion.setOwnerUUID(player.getUUID());
-            tamableMinion.setHealth(Math.min(4, tamableMinion.getMaxHealth()));
+        if (!(entity instanceof TamableAnimal tamableMinion)) return;
 
-            CompoundTag minionTag = new CompoundTag();
-            minionTag.putString("Origin", "SwarmCell");
-            tamableMinion.getPersistentData().put("SwarmCellMinionTag", minionTag);
+        tamableMinion.setHealth(Math.min(4, tamableMinion.getMaxHealth()));
 
-            if (item.isEnchanted() && player.experienceLevel > 0) {
-                player.giveExperiencePoints(-2);
-            } else item.hurtAndBreak(1, player, (e) -> e.broadcastBreakEvent(player.getUsedItemHand()));
+        if (tamableMinion instanceof MinionEntity minion) {
+            SummonMethods.summonMinion(level, spawnPos, minion, 0, true, player);
+        } else {
+            SummonMethods.summonTamedAnimal(level, spawnPos, tamableMinion, player);
+        }
 
+        CompoundTag minionTag = new CompoundTag();
+        minionTag.putString("Origin", "SwarmCell");
+        tamableMinion.getPersistentData().put("SwarmCellMinionTag", minionTag);
 
+        if (item.isEnchanted() && player.experienceLevel > 0) {
+            player.giveExperiencePoints(-2);
+        } else {
+            item.hurtAndBreak(1, player, (e) -> e.broadcastBreakEvent(player.getUsedItemHand()));
         }
     }
 

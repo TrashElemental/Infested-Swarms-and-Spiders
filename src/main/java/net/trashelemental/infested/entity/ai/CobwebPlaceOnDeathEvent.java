@@ -8,7 +8,6 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.trashelemental.infested.block.ModBlocks;
-import net.trashelemental.infested.entity.custom.minions.AttackSpiderEntity;
 import net.trashelemental.infested.entity.custom.minions.SpiderMinionEntity;
 
 @SuppressWarnings("deprecation")
@@ -21,7 +20,7 @@ public class CobwebPlaceOnDeathEvent {
         Level level = entity.level();
         BlockPos entityPos = entity.blockPosition();
 
-        if (entity instanceof SpiderMinionEntity || entity instanceof AttackSpiderEntity) {
+        if (entity instanceof SpiderMinionEntity) {
             placeCobwebTrap(level, entityPos);
         }
     }

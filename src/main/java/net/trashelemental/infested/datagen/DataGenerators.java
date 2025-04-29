@@ -7,6 +7,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.trashelemental.infested.compat.BetterCombat.BetterCombatWeaponPresetProvider;
 import net.trashelemental.infested.datagen.loot.ModLootTableProvider;
 import net.trashelemental.infested.datagen.tags.ModBlockTagGenerator;
 import net.trashelemental.infested.datagen.tags.ModEntityTagGenerator;
@@ -41,6 +42,8 @@ public class DataGenerators {
 
         generator.addProvider(event.includeServer(), new ModAdvancementProvider(packOutput, lookupProvider, existingFileHelper));
 
+        //Better Combat
+        generator.addProvider(event.includeServer(), new BetterCombatWeaponPresetProvider(packOutput));
 
     }
 }

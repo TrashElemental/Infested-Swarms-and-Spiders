@@ -1,4 +1,4 @@
-// 1.20.1	2024-08-20T22:24:36.8078291	Loot Tables
+// 1.20.1	2025-04-10T13:51:09.630691	Loot Tables
 7d54cfd58ca2c3159b68c3ba3ea1064d9f61abb5 data/infested/loot_tables/blocks/chiseled_chitin_bricks.json
 d988d3d2df31874eb8d11c6e0cd9607d0537287c data/infested/loot_tables/blocks/chitin_block.json
 a7440a1fe2580343d7c3388ad176310073fc1651 data/infested/loot_tables/blocks/chitin_bricks.json
@@ -19,5 +19,4 @@ d92834f6af444fa7e948c9a12e2f8571bb5169b8 data/infested/loot_tables/entities/bril
 351a5dbfbcc937c86ffc6dcd73dfca1959c0ebbb data/infested/loot_tables/entities/grub.json
 49cd8e1724d8e42cc2f62064b2d760d0c793a64e data/infested/loot_tables/entities/harvest_beetle.json
 91ea81704deb85c043dfaba13387877f365b5a9c data/infested/loot_tables/entities/jewel_beetle.json
-771c9d5aeab86d17d598b09b2eea5a3d178ac89e data/infested/loot_tables/entities/mantis.json
-edf11c25453f806d6e9bcb44f3e3f05099d75bc8 data/infested/loot_tables/entities/orchid_mantis.json
+14d5d5a85b744f0c029aafbc51c0c8215f649757 data/infested/loot_tables/entities/mantis.json

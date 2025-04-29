@@ -1,11 +1,15 @@
-// 1.20.1	2024-08-17T23:20:31.9151291	Tags for minecraft:item mod id infested
-1f88023b16d9757ce12f92f54c5c4e97d262b51e data/forge/tags/items/items/armor/boots.json
-06eeaa99e60a982aaabc73f35b80df2004d11805 data/forge/tags/items/items/armor/chestplates.json
-06eeaa99e60a982aaabc73f35b80df2004d11805 data/forge/tags/items/items/armor/chest_armor.json
-cbe391131564a164db341bdb1f13d5ec516e24cf data/forge/tags/items/items/armor/helmets.json
-c0a5b07fe55d1151743d21c58dfc067a4e4d2fce data/forge/tags/items/items/armor/leggings.json
-1f88023b16d9757ce12f92f54c5c4e97d262b51e data/neoforge/tags/items/items/armor/boots.json
-06eeaa99e60a982aaabc73f35b80df2004d11805 data/neoforge/tags/items/items/armor/chestplates.json
-06eeaa99e60a982aaabc73f35b80df2004d11805 data/neoforge/tags/items/items/armor/chest_armor.json
-cbe391131564a164db341bdb1f13d5ec516e24cf data/neoforge/tags/items/items/armor/helmets.json
-c0a5b07fe55d1151743d21c58dfc067a4e4d2fce data/neoforge/tags/items/items/armor/leggings.json
+// 1.20.1	2025-04-12T18:53:51.569468	Tags for minecraft:item mod id infested
+ab5efabfa9e21e81a4d882175e6467134a52e778 data/forge/tags/items/armors.json
+a0977aea5b3744108125408c611862995e260c31 data/forge/tags/items/armors/boots.json
+ec41beaae19bd0b4c83720fd1f13677d8986c4f7 data/forge/tags/items/armors/chestplates.json
+ec41beaae19bd0b4c83720fd1f13677d8986c4f7 data/forge/tags/items/armors/chest_armors.json
+51a4490409101b47276dff1a8fb964c6834d7685 data/forge/tags/items/armors/helmets.json
+0d5d71f9af27b75687f8974e7e39a73f868e6d10 data/forge/tags/items/armors/leggings.json
+8e238aafbfa81fbe0c066b239eb18d639d66f24b data/forge/tags/items/swords.json
+a0977aea5b3744108125408c611862995e260c31 data/neoforge/tags/items/armors/boots.json
+ec41beaae19bd0b4c83720fd1f13677d8986c4f7 data/neoforge/tags/items/armors/chestplates.json
+ec41beaae19bd0b4c83720fd1f13677d8986c4f7 data/neoforge/tags/items/armors/chest_armors.json
+51a4490409101b47276dff1a8fb964c6834d7685 data/neoforge/tags/items/armors/helmets.json
+0d5d71f9af27b75687f8974e7e39a73f868e6d10 data/neoforge/tags/items/armors/leggings.json
+8e238aafbfa81fbe0c066b239eb18d639d66f24b data/neoforge/tags/items/swords.json
+8e238aafbfa81fbe0c066b239eb18d639d66f24b data/neoforge/tags/items/tools/swords.json
